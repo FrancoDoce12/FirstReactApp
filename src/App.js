@@ -1,14 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/navbar/Navbar';
+import ItemListContainer from './components/itemListContainer/ItemListContainer';
 
 function App() {
   return (
     <div className="App">
+      <Navbar/>
+      <ItemListContainer greetings={"Hola Mundoo"} />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
         <a
           className="App-link"
           href="https://reactjs.org"

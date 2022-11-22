@@ -1,0 +1,27 @@
+.car-widget {
+    /* max-height: 40px; */
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+    flex-grow: 3;
+}
+
+.shopping-car {
+    max-width: 30px;
+    max-height: 30px;
+    display: inline;
+}
+
+.car-widget p {
+    margin: 0;
+
+    min-width: 30px;
+    min-height: 30px;
+    display: inline;
+    background-color: red;
+    border-radius: 50%;
+
+    flex-grow: 2;
+}

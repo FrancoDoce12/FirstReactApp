@@ -1,0 +1,25 @@
+.navbar {
+    padding: 10px;
+    background-color: darkcyan;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.options {
+    display: flex;
+    justify-content: space-evenly;
+    margin-right: 30px;
+    align-items:center;
+    flex-grow: 0;
+}
+.brand {
+    margin-left: 30px;
+    text-align: center;
+}
+h6 {
+    margin: 10px;
+}
