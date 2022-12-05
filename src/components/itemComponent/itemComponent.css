@@ -1,0 +1,23 @@
+.item_container {
+    display: grid;
+
+    grid-template-columns: 2fr;
+    grid-template-rows:1fr ;
+
+    grid-template-areas: 'img text';
+
+
+}
+
+.item_container img {
+    grid-area: img;
+}
+
+.text_container {
+    grid-area: text;
+
+    display: flexbox;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
