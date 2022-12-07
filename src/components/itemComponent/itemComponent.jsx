@@ -1,8 +1,11 @@
-import 'itemComponent.css'
+import './itemComponent.css'
+import {Link} from 'react-router-dom'
 
 
 
-function itemComponent(img_source, alt, title, description) {
+
+function ItemComponent({id ,img_source, alt = '', title = 'UNDEFINED', description = ''}) {
+
 
     return (
         <div className='item_container'>
@@ -10,10 +13,13 @@ function itemComponent(img_source, alt, title, description) {
             <div className='text_container'>
                 <h2>{title}</h2>
                 <p>{description}</p>
+                <Link to={`/item/${id}`} >
+                    <button>Details!</button>
+                </Link>
             </div>
         </div>
     )
 
 }
 
-export default itemComponent
+export default ItemComponent

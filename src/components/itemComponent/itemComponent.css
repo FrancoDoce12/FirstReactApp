@@ -1,11 +1,14 @@
 .item_container {
+
+    padding: 50px;
+
+
     display: grid;
 
-    grid-template-columns: 2fr;
+    grid-template-columns: 50% 50%;
     grid-template-rows:1fr ;
 
     grid-template-areas: 'img text';
-
 
 }
 
