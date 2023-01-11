@@ -1,0 +1,45 @@
+.form-notification-container {
+    width: fit-content;
+    margin: auto;
+}
+
+.middel-div {
+    display: inline;
+    margin: 0px 10px;
+    
+    font-size: medium;
+    border-radius: 20%;
+}
+
+.form-notification {
+    display: inline-block;
+
+    width: fit-content;
+    margin: auto;
+
+    
+    margin: 0px 6px;
+    padding: 0px;
+}
+
+.color-class-red {
+    background-color: rgb(255, 65, 65);
+    color: rgb(255, 190, 190);
+}
+
+.color-class-green {
+    background-color: rgb(144, 255, 144);
+    color: rgb(211, 255, 211);
+}
+
+.color-class-blue {
+    background-color: rgb(65, 65, 255);
+    color: rgb(190, 190, 255);
+}
+
+.color-class-gray {
+    background-color: rgb(168, 168, 168);
+    color: rgb(41, 41, 41);
+}
+
+

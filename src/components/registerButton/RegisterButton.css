@@ -1,0 +1,15 @@
+.RegisterButton {
+    color: rgb(0, 0, 0);
+    font-size: medium;
+
+    background-color: brown;
+
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px;
+
+
+}
+
+.RegisterButton:hover {
+    cursor: pointer;
+}
