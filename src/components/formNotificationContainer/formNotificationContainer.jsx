@@ -6,28 +6,29 @@ import { isIterable } from '../../utils/functions'
 
 
 
-function FormNotificationContainer({notificationMessages = [], children}) {
-
-    const isChildrenIterable = isIterable(children)
+function FormNotificationContainer({ notificationMessages = [], children }) {
 
     let notifications = []
 
     let key = 0
     notificationMessages.forEach(message => {
 
-        let notificacionElement = <FormNotification key={key} notificationMessage={message}></FormNotification>
-        // let notificacionElement = FormNotification(message,key)
-        console.log(notificacionElement.props, "props")
-        notifications.push(notificacionElement)
+        if (message.color && message.text) {
+            notifications.push(
+                <FormNotification key={key} notificationMessage={message.text} colorClass={message.color}>
+                </FormNotification>
+            )
+        }
+
         key++
     })
-    console.log(notifications)
-    
 
 
-    
-    
-    
+
+
+
+
+
     useEffect(() => {
         notificationMessages.forEach(element => {
             // crear el elemento notificacion y añadirlo a sus childrends
@@ -35,14 +36,14 @@ function FormNotificationContainer({notificationMessages = [], children}) {
             // state y renderisarlo ahi dentro como se hiso con children
         });
     })
-    
+
 
     return (
         <div>
             {notifications}
             {children}
         </div>
-        )
+    )
 }
 
 export default FormNotificationContainer

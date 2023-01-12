@@ -11,9 +11,9 @@ import { checkUserSession } from './utils/functions';
 
 function App() {
 
-  useEffect(() => {
-    checkUserSession()
-  }, []);
+  // useEffect(() => {
+  //   checkUserSession()
+  // }, []);
 
   return (
     <BrowserRouter>

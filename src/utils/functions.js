@@ -1,6 +1,8 @@
 import { getFirestore, doc, addDoc, collection, getDocs, getDoc, query, where, updateDoc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { AppContext } from '../context/context';
+import { auth } from '../firebase/config';
+import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById } from '../firebase/functions';
 
 function isIterable(obj) {
     // checks for null and undefined
@@ -30,15 +32,27 @@ function getNewSessionNumber() {
 // the session code is a random number
 
 //check always if the session code saved in the local storage it is the same than the session code in database
-function comprobationUserRegistration(formUser) {
+
+// doc(getFirestore(),"Users","")
+async function comprobationUserRegistration(formUser) {
+    console.log("dentro de la comprobacion de usuario:")
 
     if ((!formUser.email) && (!formUser.name) && (!formUser.password1) && (!formUser.password2)) {
         console.error(`User: ${formUser} is a invalid user`)
         return false
     }
-    if (getUserByEmail(formUser.email)) {
+
+
+
+    let userByEmail = await getUserByEmail(formUser.email)
+    console.log(userByEmail, "es lo que esta comprobando")
+    if (userByEmail) {
+
+        console.log("dio verdadero")
         console.error(`Email ${formUser.email} alredy on use`)
         return false
+    } else {
+        console.log("dio falso")
     }
 
 
@@ -56,17 +70,18 @@ function comprobationUserRegistration(formUser) {
 
 async function registerUser(formUser, logInUser) {
 
-    console.log("comprobacion de usuario:",comprobationUserRegistration(formUser))
+    console.log("comprobacion de usuario:", comprobationUserRegistration(formUser))
 
-    if (comprobationUserRegistration(formUser)) {
-        console.log("comprobacion de usuario:",comprobationUserRegistration(formUser), "ruvo que haber sido true")
+    if (await comprobationUserRegistration(formUser)) {
+        console.log("comprobacion de usuario:", await comprobationUserRegistration(formUser), "ruvo que haber sido true")
         await addDoc(collection(getFirestore(), 'Users'), {
             name: formUser.name,
             email: formUser.email,
             password: formUser.password1
         })
         if (logInUser) {
-            await openUserSession(user.email)
+            console.log("logInUser se ejecuta")
+            await openUserSession(formUser.email)
         }
 
         return true
@@ -115,12 +130,6 @@ async function closeUserSession(userEmail) {
 
 }
 
-async function getUserByEmail(userEmail) {
-    return (await getDocs(query(collection(getFirestore(), 'Users'), where('email', '==', userEmail)))).docs[0]
-}
-async function getUserRef(userEmail) {
-    return doc(db, `Users/${await getUserByEmail(userEmail).id}`)
-}
 
 
 
@@ -166,7 +175,12 @@ function deleteUserDataInContext() {
 
 
 
-async function test(a) {
+async function test() {
+
+    
+    //console.log(auth) 
+
+
 
 }
 
