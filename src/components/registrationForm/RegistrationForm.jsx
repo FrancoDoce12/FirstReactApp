@@ -9,7 +9,7 @@ import { doc, getFirestore } from 'firebase/firestore'
 function RegistrationForm() {
 
     //test("tunatrola@gmail.com")
-    //test()
+    test()
     // useEffect(() => {
 
     // }, [])

@@ -2,7 +2,8 @@ import { getFirestore, doc, addDoc, collection, getDocs, getDoc, query, where, u
 import { useContext } from 'react';
 import { AppContext } from '../context/context';
 import { auth } from '../firebase/config';
-import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById } from '../firebase/functions';
+import { db } from '../firebase/config';
+import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById, registerUserInDb, updateUserSessionNumber } from '../firebase/functions';
 
 function isIterable(obj) {
     // checks for null and undefined
@@ -73,15 +74,14 @@ async function registerUser(formUser, logInUser) {
     console.log("comprobacion de usuario:", comprobationUserRegistration(formUser))
 
     if (await comprobationUserRegistration(formUser)) {
+
         console.log("comprobacion de usuario:", await comprobationUserRegistration(formUser), "ruvo que haber sido true")
-        await addDoc(collection(getFirestore(), 'Users'), {
-            name: formUser.name,
-            email: formUser.email,
-            password: formUser.password1
-        })
+        await registerUserInDb(formUser)
+
         if (logInUser) {
             console.log("logInUser se ejecuta")
-            await openUserSession(formUser.email)
+            let loco = await openUserSession(formUser.email)
+            console.log(loco)
         }
 
         return true
@@ -92,7 +92,7 @@ async function registerUser(formUser, logInUser) {
 }
 
 
-function logInUser(user) {
+async function logInUser(user) {
     // this user just should have the email and the password
     const userData = getUserByEmail(user.email).data()
     //checksPassword() isn't a function because it didn't need more complexity for now
@@ -100,14 +100,21 @@ function logInUser(user) {
         openUserSession(user.email)
     }
 
+    // here it can return a notification object to use as notification
+
 }
 
 async function openUserSession(userEmail) {
-    const userRef = getUserRef(userEmail)
+
     const sessionNumber = getNewSessionNumber()
 
-    updateDoc(userRef, { sessionNumber })
-    const userFromDb = await getDoc(userRef)
+
+    await updateUserSessionNumber(userEmail, { sessionNumber })
+
+
+    const userFromDb = await getUserByEmail(userEmail)
+
+    console.log("opening user session")
 
     localStorage.setItem('sessionNumber', JSON.stringify(sessionNumber))
     localStorage.setItem('userId', JSON.stringify(userFromDb.id))
@@ -137,6 +144,9 @@ async function checkUserSession() {
 
     const localSessionNumber = JSON.parse(localStorage.getItem('sessionNumber'))
     const localUserID = JSON.parse(localStorage.getItem('userId'))
+
+    console.log(localSessionNumber, "localSessionNumber")
+    console.log(localUserID, "localUserID")
 
 
     if (localSessionNumber && localUserID) {
@@ -177,8 +187,17 @@ function deleteUserDataInContext() {
 
 async function test() {
 
+    updateUserSessionNumber("tunatrossssdsdsla@gmail.com", {sessionNumber: 123})
+
+//     let a = await getUserByEmail("tunatrossssdsdsla@gmail.com")
     
-    //console.log(auth) 
+//     console.log(a.id, "test")
+// let e = doc(db,"Users",`${a.id}`)
+// console.log(e)
+// console.log((await getDoc(e)).data())
+
+    //let a = await getDocs(query(collection(db, 'Users'), where('email', '==', userEmail))).docs[0]
+
 
 
 

@@ -7,13 +7,15 @@ import RegistrationForm from './components/registrationForm/RegistrationForm';
 import {AppContextProvider} from './context/context';
 import { useEffect } from 'react';
 import { checkUserSession } from './utils/functions';
+import { test } from './utils/functions';
 
 
 function App() {
 
-  // useEffect(() => {
-  //   checkUserSession()
-  // }, []);
+  useEffect(() => {
+    checkUserSession()
+    test()
+  }, []);
 
   return (
     <BrowserRouter>
