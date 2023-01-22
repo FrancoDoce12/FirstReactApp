@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {initFirestoreApp} from './firebase/config'
+import {AppContextProvider} from './context/context';
 
 initFirestoreApp()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
+  <AppContextProvider>
     <App />
+    </AppContextProvider>
   </>
 );
 

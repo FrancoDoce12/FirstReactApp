@@ -29,7 +29,7 @@ function getNewSessionNumber() {
 }
 
 // save the session number in local storage and the same number in the db
-//if the session is open in the database, request again the password and then change the session code
+// if the session is open in the database, request again the password and then change the session code
 // the session code is a random number
 
 //check always if the session code saved in the local storage it is the same than the session code in database
@@ -69,7 +69,7 @@ async function comprobationUserRegistration(formUser) {
 }
 
 
-async function registerUser(formUser, logInUser) {
+async function registerUser(formUser, logInUser, context) {
 
     console.log("comprobacion de usuario:", comprobationUserRegistration(formUser))
 
@@ -80,7 +80,7 @@ async function registerUser(formUser, logInUser) {
 
         if (logInUser) {
             console.log("logInUser se ejecuta")
-            let loco = await openUserSession(formUser.email)
+            let loco = await openUserSession(formUser.email, context)
             console.log(loco)
         }
 
@@ -92,19 +92,19 @@ async function registerUser(formUser, logInUser) {
 }
 
 
-async function logInUser(user) {
+async function logInUser(user, context) {
     // this user just should have the email and the password
     const userData = getUserByEmail(user.email).data()
     //checksPassword() isn't a function because it didn't need more complexity for now
     if ((userData.password == user.password)) {
-        openUserSession(user.email)
+        openUserSession(user.email, context)
     }
 
     // here it can return a notification object to use as notification
 
 }
 
-async function openUserSession(userEmail) {
+async function openUserSession(userEmail, context) {
 
     const sessionNumber = getNewSessionNumber()
 
@@ -119,10 +119,9 @@ async function openUserSession(userEmail) {
     localStorage.setItem('sessionNumber', JSON.stringify(sessionNumber))
     localStorage.setItem('userId', JSON.stringify(userFromDb.id))
 
-    // thean add the respective context info of the user
-    saveUserDataInContext(userFromDb)
+    saveUserDataInContext(userFromDb, context)
 }
-async function closeUserSession(userEmail) {
+async function closeUserSession(userEmail, context) {
 
     const userRef = getUserRef(userEmail)
 
@@ -131,7 +130,7 @@ async function closeUserSession(userEmail) {
     localStorage.setItem('sessionNumber', JSON.stringify(undefined))
     localStorage.setItem('userId', JSON.stringify(undefined))
 
-    deleteUserDataInContext()
+    deleteUserDataInContext(context)
 
     await updateQuery
 
@@ -140,7 +139,7 @@ async function closeUserSession(userEmail) {
 
 
 
-async function checkUserSession() {
+async function checkUserSession(context) {
 
     const localSessionNumber = JSON.parse(localStorage.getItem('sessionNumber'))
     const localUserID = JSON.parse(localStorage.getItem('userId'))
@@ -155,13 +154,14 @@ async function checkUserSession() {
         const userFromDb = await getDoc(userRef)
 
         if (localSessionNumber == userFromDb.data().sessionNumber) {
-            saveUserDataInContext(userFromDb)
+            saveUserDataInContext(userFromDb, context)
             setNewSessionNumber(userRef)
             return true
         }
         return false
     }
     return false
+    
 }
 async function setNewSessionNumber(userRef) {
     const sessionNumber = getNewSessionNumber()
@@ -171,14 +171,17 @@ async function setNewSessionNumber(userRef) {
 
 }
 
-function saveUserDataInContext(userFromDb) {
-    const context = useContext(AppContext)
+
+
+// context functions
+
+function saveUserDataInContext(userFromDb, context) {
+    console.log(context)
     const userData = userFromDb.data()
     context.setUser({ email: userData.email, name: userData.name })
 }
 
-function deleteUserDataInContext() {
-    const context = useContext(AppContext)
+function deleteUserDataInContext(context) {
     context.setUser({})
 }
 
@@ -187,14 +190,14 @@ function deleteUserDataInContext() {
 
 async function test() {
 
-    updateUserSessionNumber("tunatrossssdsdsla@gmail.com", {sessionNumber: 123})
+    //  updateUserSessionNumber("tunatrossssdsdsla@gmail.com", {sessionNumber: 123})
 
-//     let a = await getUserByEmail("tunatrossssdsdsla@gmail.com")
-    
-//     console.log(a.id, "test")
-// let e = doc(db,"Users",`${a.id}`)
-// console.log(e)
-// console.log((await getDoc(e)).data())
+    //     let a = await getUserByEmail("tunatrossssdsdsla@gmail.com")
+
+    //     console.log(a.id, "test")
+    // let e = doc(db,"Users",`${a.id}`)
+    // console.log(e)
+    // console.log((await getDoc(e)).data())
 
     //let a = await getDocs(query(collection(db, 'Users'), where('email', '==', userEmail))).docs[0]
 

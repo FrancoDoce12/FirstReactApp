@@ -5,14 +5,15 @@ import { useState, useContext, useEffect } from 'react'
 import { registerUser, checkPasswords, test, getUserByEmail } from '../../utils/functions'
 import { AppContext } from '../../context/context'
 import { doc, getFirestore } from 'firebase/firestore'
+import { async } from '@firebase/util'
 
 function RegistrationForm() {
 
     //test("tunatrola@gmail.com")
-    test()
-    // useEffect(() => {
+    //test()
+    useEffect(() => {
 
-    // }, [])
+    }, [])
 
 
 
@@ -20,6 +21,7 @@ function RegistrationForm() {
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPassword] = useState("")
     const [password2Input, setPassword2] = useState("")
+    const [localContext, setLocalContext] = useState(useContext(AppContext))
 
     const [formState, setFormState] = useState("default")
     // Posibles states of form are: loading, succsesful, error and default
@@ -36,7 +38,12 @@ function RegistrationForm() {
         case "error":
             notificationMessages.push({ text: "Error", color: "red" })
             break
+        default:
+            break
     }
+    // async function registerFormUser(){
+    //     return await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext)
+    // }
 
 
     return (
@@ -45,8 +52,9 @@ function RegistrationForm() {
 
             setFormState("loading")
 
+
             async function register() {
-                if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true) === true) {
+                if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext) === true) {
                     console.log('usuario registrado con exito')
                     setFormState("succsesful")
                 } else {

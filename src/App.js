@@ -4,23 +4,26 @@ import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/itemListContainer/ItemListContainer';
 import ItemDetailContainer from './components/itemDetailContainer/itemDetailContainer';
 import RegistrationForm from './components/registrationForm/RegistrationForm';
-import {AppContextProvider} from './context/context';
-import { useEffect } from 'react';
+import {AppContextProvider, AppContext} from './context/context';
+import { useEffect, useState, useContext } from 'react';
 import { checkUserSession } from './utils/functions';
 import { test } from './utils/functions';
 
 
 function App() {
 
+  const [localContext, setLocalContext] = useState(useContext(AppContext))
+  
+
   useEffect(() => {
-    checkUserSession()
+    checkUserSession(localContext)
     test()
   }, []);
 
   return (
     <BrowserRouter>
       
-      <AppContextProvider>
+      {/* <AppContextProvider> */}
         <div className="App">
           <Navbar />
 
@@ -33,7 +36,7 @@ function App() {
 
           </Routes>
         </div>
-      </AppContextProvider>
+      {/* </AppContextProvider> */}
 
     </BrowserRouter>
   );
