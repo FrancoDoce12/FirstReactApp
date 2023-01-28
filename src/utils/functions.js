@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AppContext } from '../context/context';
 import { auth } from '../firebase/config';
 import { db } from '../firebase/config';
-import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById, registerUserInDb, updateUserSessionNumber } from '../firebase/functions';
+import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber } from '../firebase/functions';
 
 function isIterable(obj) {
     // checks for null and undefined
@@ -119,20 +119,21 @@ async function openUserSession(userEmail, context) {
     localStorage.setItem('sessionNumber', JSON.stringify(sessionNumber))
     localStorage.setItem('userId', JSON.stringify(userFromDb.id))
 
-    saveUserDataInContext(userFromDb, context)
+    await saveUserDataInContext(userFromDb, context)
 }
-async function closeUserSession(userEmail, context) {
 
-    const userRef = getUserRef(userEmail)
+async function closeUserSession(context) {
 
-    const updateQuery = updateDoc(userRef, { sessionNumber: undefined })
+    const userRef = await getUserRef(context.user.email)
 
-    localStorage.setItem('sessionNumber', JSON.stringify(undefined))
-    localStorage.setItem('userId', JSON.stringify(undefined))
+    if (userRef){
+        await updateDoc(userRef, { sessionNumber: null })
+    }
 
-    deleteUserDataInContext(context)
+    localStorage.setItem('sessionNumber', JSON.stringify(false))
+    localStorage.setItem('userId', JSON.stringify(false))
 
-    await updateQuery
+    await deleteUserDataInContext(context)
 
 }
 
@@ -144,24 +145,21 @@ async function checkUserSession(context) {
     const localSessionNumber = JSON.parse(localStorage.getItem('sessionNumber'))
     const localUserID = JSON.parse(localStorage.getItem('userId'))
 
-    console.log(localSessionNumber, "localSessionNumber")
-    console.log(localUserID, "localUserID")
-
 
     if (localSessionNumber && localUserID) {
-        const db = getFirestore()
-        const userRef = doc(db, `Users/${localUserID}`)
+
+        const userRef = getUserRefByID(localUserID)
         const userFromDb = await getDoc(userRef)
 
         if (localSessionNumber == userFromDb.data().sessionNumber) {
-            saveUserDataInContext(userFromDb, context)
-            setNewSessionNumber(userRef)
-            return true
+
+            await saveUserDataInContext(userFromDb, context)
+            await setNewSessionNumber(userRef)
+
         }
-        return false
     }
-    return false
-    
+    context.setIsUserSessionCheck(true)
+
 }
 async function setNewSessionNumber(userRef) {
     const sessionNumber = getNewSessionNumber()
@@ -175,37 +173,23 @@ async function setNewSessionNumber(userRef) {
 
 // context functions
 
-function saveUserDataInContext(userFromDb, context) {
-    console.log(context)
+async function saveUserDataInContext(userFromDb, context) {
     const userData = userFromDb.data()
-    context.setUser({ email: userData.email, name: userData.name })
+    await context.setUser({ email: userData.email, name: userData.name })
 }
 
-function deleteUserDataInContext(context) {
-    context.setUser({})
+async function deleteUserDataInContext(context) {
+    await context.setUser({})
 }
 
 
 
 
-async function test() {
-
-    //  updateUserSessionNumber("tunatrossssdsdsla@gmail.com", {sessionNumber: 123})
-
-    //     let a = await getUserByEmail("tunatrossssdsdsla@gmail.com")
-
-    //     console.log(a.id, "test")
-    // let e = doc(db,"Users",`${a.id}`)
-    // console.log(e)
-    // console.log((await getDoc(e)).data())
-
-    //let a = await getDocs(query(collection(db, 'Users'), where('email', '==', userEmail))).docs[0]
-
-
-
+function test(context) {
+closeUserSession(context)
 
 }
 
 
 
-export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable }
+export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession }

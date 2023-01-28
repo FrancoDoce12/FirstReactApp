@@ -1,4 +1,4 @@
-.RegisterButton {
+.Button1 {
     color: rgb(0, 0, 0);
     font-size: medium;
 
@@ -10,6 +10,6 @@
 
 }
 
-.RegisterButton:hover {
+.Button1:hover {
     cursor: pointer;
 }

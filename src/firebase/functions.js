@@ -19,6 +19,10 @@ async function getUserRef(userEmail) {
     return doc(db, "Users", `${userInDb.id}`)
 }
 
+function getUserRefByID(userID){
+    return doc(db, `Users/${userID}`)
+}
+
 async function registerUserInDb(formUser) {
 
     console.log(formUser, "se esta registrando")
@@ -45,4 +49,4 @@ async function updateUserSessionNumber(userEmail, dataOfSessionNumber) {
 
 
 
-export { getUserByEmail, getUserIdByEmail, getUserRef, registerUserInDb, updateUserSessionNumber }
+export { getUserByEmail, getUserIdByEmail, getUserRef, registerUserInDb, updateUserSessionNumber, getUserRefByID }

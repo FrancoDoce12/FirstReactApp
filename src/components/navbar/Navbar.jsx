@@ -1,14 +1,16 @@
 import './Navbar.css'
 import CarWidget from '../carWidget/CarWidget'
 import { Link } from 'react-router-dom'
-import {getFirestore, doc, addDoc, collection} from 'firebase/firestore'
+import { getFirestore, doc, addDoc, collection } from 'firebase/firestore'
 import { useContext, useState } from 'react'
-import {AppContext} from '../../context/context'
-import UserButton from '../userButton/UserButton'
+import { AppContext } from '../../context/context'
+import UserWidget from '../userButton/UserWidget'
 
 
 
 function Navbar() {
+
+    //let contex = useContext(AppContext)
 
 
 
@@ -18,7 +20,7 @@ function Navbar() {
             <Link to={'/'}>
                 <span className='brand'>Art E-Comerse</span>
             </Link>
-            <UserButton></UserButton>
+            <UserWidget></UserWidget>
             <div className='options'>
                 <h5>Categories:</h5>
                 <Link to={'/category/red'}>

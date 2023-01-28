@@ -1,19 +1,15 @@
 import './RegistrationForm.css'
 import FormNotificationContainer from '../formNotificationContainer/formNotificationContainer'
 import RegisterInput from '../registerImput/RegisterInput'
+import SubmitButton from '../submitButton/submitButton'
 import { useState, useContext, useEffect } from 'react'
 import { registerUser, checkPasswords, test, getUserByEmail } from '../../utils/functions'
 import { AppContext } from '../../context/context'
 import { doc, getFirestore } from 'firebase/firestore'
-import { async } from '@firebase/util'
+
 
 function RegistrationForm() {
 
-    //test("tunatrola@gmail.com")
-    //test()
-    useEffect(() => {
-
-    }, [])
 
 
 
@@ -21,9 +17,11 @@ function RegistrationForm() {
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPassword] = useState("")
     const [password2Input, setPassword2] = useState("")
-    const [localContext, setLocalContext] = useState(useContext(AppContext))
+    let localContext = useContext(AppContext)
+
 
     const [formState, setFormState] = useState("default")
+    console.log("render form")
     // Posibles states of form are: loading, succsesful, error and default
 
     const notificationMessages = []
@@ -50,20 +48,23 @@ function RegistrationForm() {
         <form onSubmit={event => {
             event.preventDefault();
 
+
             setFormState("loading")
 
+                (async function () {
+                    // function code here
+                    if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext) === true) {
+                        setFormState("succsesful")
+                    } else {
+                        setFormState("error")
+                        // need some notification to tell that the password have to be the same
+                    }
+                })();
 
-            async function register() {
-                if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext) === true) {
-                    console.log('usuario registrado con exito')
-                    setFormState("succsesful")
-                } else {
-                    console.log("usuario no fue registrado")
-                    setFormState("error")
-                    // need some notification to tell that the password have to be the same
-                }
-            }
-            register()
+            // async function register() {
+
+            // }
+            //register()
 
 
 
@@ -101,9 +102,7 @@ function RegistrationForm() {
                 ></RegisterInput>
 
             </div>
-
-            <button type="submit">Register profile</button>
-
+            <SubmitButton isShow={formState != "succsesful"} ></SubmitButton>
             <FormNotificationContainer notificationMessages={notificationMessages}>
                 <h2>child</h2>
             </FormNotificationContainer>

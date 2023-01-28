@@ -7,18 +7,25 @@ function AppContextProvider({ children }) {
 
     const [cart, setCart] = useState([])
 
-    const [isUserSessionOpen, setIsUserSessionOpen ] = useState(false)
+    const [isUserSessionCheck, setIsUserSessionCheck ] = useState(false)
 
     const [user, setUser] = useState({})
+
+    const [isInRegister, setIsInRegister] = useState(false)
+
+    console.log("re render de context")
 
 
     let value ={
         cart,
         setCart,
-        isUserSessionOpen,
-        setIsUserSessionOpen,
-        user,
-        setUser,
+        user: user,
+        setUser : setUser,
+        isUserSessionCheck,
+        setIsUserSessionCheck,
+        isInRegister,
+        setIsInRegister
+        
         
     }
 
