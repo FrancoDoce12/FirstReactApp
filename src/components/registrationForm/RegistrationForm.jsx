@@ -21,7 +21,6 @@ function RegistrationForm() {
 
 
     const [formState, setFormState] = useState("default")
-    console.log("render form")
     // Posibles states of form are: loading, succsesful, error and default
 
     const notificationMessages = []
@@ -39,9 +38,7 @@ function RegistrationForm() {
         default:
             break
     }
-    // async function registerFormUser(){
-    //     return await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext)
-    // }
+    
 
 
     return (
@@ -72,33 +69,33 @@ function RegistrationForm() {
         }}>
             <div>
 
-                <RegisterInput labelText={"Acount Name:"} inputType={"text"} inputName={"Name"}
-                    inputPlaceholder={"Name"} onChangeEventCallBack={(event => setNameInput(event.target.value))}
+                <RegisterInput labelText={"Acount Name:"} type={"text"} name={"Name"}
+                    placeholder={"Name"} onChange={(event => setNameInput(event.target.value))}
                 ></RegisterInput>
 
             </div>
             <div>
 
-                <RegisterInput labelText={"Email:"} inputType={"email"} inputName={"email"}
-                    inputPlaceholder={"example@email.com"} onChangeEventCallBack={(event => setEmailInput(event.target.value))}
-                ></RegisterInput>
-
-            </div>
-            <div>
-
-                <RegisterInput
-                    labelText={"Password:"} inputType={"password"} inputName={"password"}
-                    inputPlaceholder={"YourPassWord456"}
-                    onChangeEventCallBack={(event => setPassword(event.target.value))}
+                <RegisterInput labelText={"Email:"} type={"email"} name={"email"}
+                    placeholder={"example@email.com"} onChange={(event => setEmailInput(event.target.value))}
                 ></RegisterInput>
 
             </div>
             <div>
 
                 <RegisterInput
-                    labelText={"Repeat your password:"} inputType={"password"} inputName={"password"}
-                    inputPlaceholder={"YourPassWord456"}
-                    onChangeEventCallBack={(event => setPassword2(event.target.value))}
+                    labelText={"Password:"} type={"password"} name={"password"}
+                    placeholder={"YourPassWord456"}
+                    onChange={(event => setPassword(event.target.value))}
+                ></RegisterInput>
+
+            </div>
+            <div>
+
+                <RegisterInput
+                    labelText={"Repeat your password:"} type={"password"} name={"password"}
+                    placeholder={"YourPassWord456"}
+                    onChange={(event => setPassword2(event.target.value))}
                 ></RegisterInput>
 
             </div>

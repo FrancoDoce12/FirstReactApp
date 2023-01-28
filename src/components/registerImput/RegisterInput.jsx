@@ -1,18 +1,18 @@
 import './RegisterInput.css'
 
-function RegisterInput({labelText, inputName, inputType, inputPlaceholder, onChangeEventCallBack, isError = false }){
+function RegisterInput({labelText, name, type, placeholder, onChange, isError = false }){
 
 
     let errorIcon = ""
-    let inputClassName = ""
+    let className = ""
     if (isError){
         errorIcon = "*"
-        inputClassName = "error-input"
+        className = "error-input"
     }
 
     return (
         <label>{labelText}
-        <input className={inputClassName} type={inputType} name={inputName} placeholder={inputPlaceholder} onChange={onChangeEventCallBack} />
+        <input className={className} type={type} name={name} placeholder={placeholder} onChange={onChange} />
         <span className='color-red'>{errorIcon}</span>
         </label>
     )
