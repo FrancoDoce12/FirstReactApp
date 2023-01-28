@@ -51,20 +51,20 @@ function RegistrationForm() {
 
             setFormState("loading")
 
-                (async function () {
-                    // function code here
-                    if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext) === true) {
-                        setFormState("succsesful")
-                    } else {
-                        setFormState("error")
-                        // need some notification to tell that the password have to be the same
-                    }
-                })();
+            // (async function () {
 
-            // async function register() {
+            // })();
 
-            // }
-            //register()
+            async function register() {
+                // function code here
+                if (await registerUser({ name: nameInput, email: emailInput, password1: passwordInput, password2: password2Input }, true, localContext) === true) {
+                    setFormState("succsesful")
+                } else {
+                    setFormState("error")
+                    // need some notification to tell that the password have to be the same
+                }
+            }
+            register()
 
 
 
