@@ -3,40 +3,41 @@ import './App.css';
 import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/itemListContainer/ItemListContainer';
 import ItemDetailContainer from './components/itemDetailContainer/itemDetailContainer';
-import RegistrationForm from './components/registrationForm/RegistrationForm';
 import { AppContextProvider, AppContext } from './context/context';
 import { useEffect, useState, useContext } from 'react';
 import { checkUserSession } from './utils/functions';
 import { test } from './utils/functions';
+import Form from './components/formsComponents/From';
+import { type } from '@testing-library/user-event/dist/type';
+import RegisterForm from './components/formsComponents/registerForm';
+
 
 
 function App() {
 
   let context = useContext(AppContext)
-  
+
   useEffect(() => {
     checkUserSession(context)
-    
-  },[]);
+
+  }, []);
 
   return (
     <BrowserRouter>
-      
+
       {/* <AppContextProvider> */}
-        <div className="App">
-          <Navbar />
+      <div className="App">
+        <Navbar />
 
-          <Routes>
-            <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
-            <Route path='/category/:category' element={<ItemListContainer />} ></Route>
-            <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
-            <Route path='/Register' element={<RegistrationForm/>} ></Route>
-            {/* <ItemListContainer greetings={"Hola Mundoo"} /> */}
-
-          </Routes>
-        </div>
-      {/* </AppContextProvider> */}
-
+        <Routes>
+          <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
+          <Route path='/category/:category' element={<ItemListContainer />} ></Route>
+          <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
+          {/* <Route path='/Register' element={<RegistrationForm/>} ></Route> */}
+          <Route path='/Register' element={<RegisterForm/>} ></Route>
+          
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

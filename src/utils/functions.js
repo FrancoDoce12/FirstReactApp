@@ -69,7 +69,7 @@ async function comprobationUserRegistration(formUser) {
 }
 
 
-async function registerUser(formUser, logInUser, context) {
+async function registerUser(formUser, context, logInUser = true) {
 
     console.log("comprobacion de usuario:", comprobationUserRegistration(formUser))
 
@@ -192,4 +192,4 @@ closeUserSession(context)
 
 
 
-export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession }
+export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, openUserSession }
