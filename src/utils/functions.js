@@ -183,7 +183,7 @@ async function deleteUserDataInContext(context) {
 }
 
 
-
+// special test function
 
 function test(context) {
 closeUserSession(context)
@@ -192,4 +192,4 @@ closeUserSession(context)
 
 
 
-export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, openUserSession }
+export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, logInUser }

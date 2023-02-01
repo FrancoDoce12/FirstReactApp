@@ -1,4 +1,4 @@
-import { openUserSession } from "../../utils/functions";
+import { logInUser } from "../../utils/functions";
 import Form from "./From";
 
 
@@ -20,7 +20,7 @@ function LogInForm() {
         ]}
         onSubmit = { 
             async (userForm, context, event) => {
-                return await openUserSession(userForm.email, context)
+                return await logInUser(userForm, context)
             }
         } />
 
