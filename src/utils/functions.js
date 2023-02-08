@@ -94,11 +94,13 @@ async function registerUser(formUser, context, logInUser = true) {
 
 async function logInUser(user, context) {
     // this user just should have the email and the password
-    const userData = getUserByEmail(user.email).data()
+    const userData = (await getUserByEmail(user.email)).data()
     //checksPassword() isn't a function because it didn't need more complexity for now
     if ((userData.password == user.password)) {
         openUserSession(user.email, context)
+        return true
     }
+    return false
 
     // here it can return a notification object to use as notification
 

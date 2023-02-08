@@ -10,6 +10,7 @@ import { test } from './utils/functions';
 import Form from './components/formsComponents/From';
 import { type } from '@testing-library/user-event/dist/type';
 import RegisterForm from './components/formsComponents/registerForm';
+import LogInForm from './components/formsComponents/logInForm';
 
 
 
@@ -33,7 +34,7 @@ function App() {
           <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
-          {/* <Route path='/Register' element={<RegistrationForm/>} ></Route> */}
+          <Route path='/LogIn' element={<LogInForm/>} ></Route>
           <Route path='/Register' element={<RegisterForm/>} ></Route>
           
         </Routes>

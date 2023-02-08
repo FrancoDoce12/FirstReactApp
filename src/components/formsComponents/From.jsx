@@ -16,12 +16,12 @@ function Form({ inputs, onSubmit = () => { } }) {
 
     // despues fijarse que hacer o convertir en un estado para mejorar el rendimiento del elemento
 
-
+let inputId = 0
     inputs.forEach(input => {
         // aca tengo que crear los use states y ponerlos dentro de "imputsValues" para que sean usados por la funcion de abajo y guardar los 2 dentro de un objeto u otro array
         imputsToLoad.push(
             <RegisterInput
-                labelText={input.labelText} type={input.type} name={input.name} placeholder={input.placeholder}
+                labelText={input.labelText} key={inputId} type={input.type} name={input.name} placeholder={input.placeholder}
                 onChange={event => {
                     // tengo que hacer que esta funcion guarde aca adentro los valores de cada una de los inputs
                     imputsValues[input.name] = event.target.value
@@ -29,6 +29,7 @@ function Form({ inputs, onSubmit = () => { } }) {
             >
             </RegisterInput>
         )
+        inputId++
     });
 
 
@@ -41,10 +42,10 @@ function Form({ inputs, onSubmit = () => { } }) {
 
     switch (formState) {
         case "loading":
-            notificationMessages.push({ text: "Loading registration", color: "gray" })
+            notificationMessages.push({ text: "Loading Request", color: "gray" })
             break
         case "succsesful":
-            notificationMessages.push({ text: "Account loged succsesfully", color: "green" })
+            notificationMessages.push({ text: "Action Succsesful", color: "green" })
             break
         case "error":
             notificationMessages.push({ text: "Error", color: "red" })
@@ -60,15 +61,11 @@ function Form({ inputs, onSubmit = () => { } }) {
             
             event.preventDefault()
             setFormState("loading")
-            console.log(formState, 1)
             let caca = await onSubmit(imputsValues, localContext, event)
-            console.log(caca, "el resultado es")
             if (caca) {
                 setFormState("succsesful")
-                console.log(formState, 2)
             } else {
                 setFormState("error")
-                console.log(formState, 3)
             }
             
         }}>
