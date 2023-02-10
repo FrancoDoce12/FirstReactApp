@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AppContext } from '../context/context';
 import { auth } from '../firebase/config';
 import { db } from '../firebase/config';
-import { getUserByEmail, getUserIdByEmail, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber } from '../firebase/functions';
+import { getUserByEmail, getUserIdByEmail, getProducts, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber, getProductsByCategories } from '../firebase/functions';
 
 function isIterable(obj) {
     // checks for null and undefined
@@ -128,7 +128,7 @@ async function closeUserSession(context) {
 
     const userRef = await getUserRef(context.user.email)
 
-    if (userRef){
+    if (userRef) {
         await updateDoc(userRef, { sessionNumber: null })
     }
 
@@ -187,9 +187,26 @@ async function deleteUserDataInContext(context) {
 
 // special test function
 
-function test(context) {
-closeUserSession(context)
+async function test() {
 
+    // let data = await getProductsByCategories(["red"])
+
+    // console.log(data, "la data obtenida")
+    // console.log(data.docs, "data docs")
+    // data.forEach(item =>{
+    //     console.log(item,"item")
+    // })
+
+
+
+
+    // let data = await getProducts() 
+    // data.forEach(img => {
+    //     console.log(img.data())
+    // });
+    // console.log(await data, "data form test")
+    // console.log((await data).docs, "data docs")
+    // console.log(await data.data(), "data 1 con await")
 }
 
 

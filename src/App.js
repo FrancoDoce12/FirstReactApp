@@ -20,8 +20,11 @@ function App() {
 
   useEffect(() => {
     checkUserSession(context)
-
+    test()
+    
   }, []);
+
+  //
 
   return (
     <BrowserRouter>
@@ -34,9 +37,9 @@ function App() {
           <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
-          <Route path='/LogIn' element={<LogInForm/>} ></Route>
-          <Route path='/Register' element={<RegisterForm/>} ></Route>
-          
+          <Route path='/LogIn' element={<LogInForm />} ></Route>
+          <Route path='/Register' element={<RegisterForm />} ></Route>
+
         </Routes>
       </div>
     </BrowserRouter>

@@ -13,8 +13,6 @@ function AppContextProvider({ children }) {
 
     const [isInRegister, setIsInRegister] = useState(false)
 
-    console.log("re render de context")
-
 
     let value ={
         cart,
