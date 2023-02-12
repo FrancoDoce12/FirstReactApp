@@ -1,6 +1,5 @@
 import './itemDetailContainer.css'
 import {useParams} from 'react-router-dom'
-import database from '../database'
 import { getItemById } from '../../firebase/functions'
 import { useEffect, useState } from 'react'
 

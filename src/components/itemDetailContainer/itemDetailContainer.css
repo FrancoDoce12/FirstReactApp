@@ -10,3 +10,12 @@
     grid-template-areas:'img'
                         'text';
 }
+
+.item_detail_container img {
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: cover;
+    align-self: stretch;
+    justify-self: center;
+}
