@@ -6,11 +6,15 @@ import ItemDetailContainer from './components/itemDetailContainer/itemDetailCont
 import { AppContextProvider, AppContext } from './context/context';
 import { useEffect, useState, useContext } from 'react';
 import { checkUserSession } from './utils/functions';
-import { test } from './utils/functions';
+// import { test } from './utils/functions';
 import Form from './components/formsComponents/From';
 import { type } from '@testing-library/user-event/dist/type';
 import RegisterForm from './components/formsComponents/registerForm';
 import LogInForm from './components/formsComponents/logInForm';
+import RegisterOptions from './components/registerOptions/registerOptions';
+import RegisterGoogleForm from './components/formsComponents/registerGoogleForm';
+
+import { test } from './firebase/functions';
 
 
 
@@ -20,7 +24,7 @@ function App() {
 
   useEffect(() => {
     checkUserSession(context)
-    test()
+    //test("holaaa@gmil.com")
     
   }, []);
 
@@ -37,8 +41,11 @@ function App() {
           <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
-          <Route path='/LogIn' element={<LogInForm />} ></Route>
-          <Route path='/Register' element={<RegisterForm />} ></Route>
+          <Route path='/LogInoptions' element={<LogInForm />} ></Route>
+          <Route path='/RegisterOption1' element={<RegisterForm />} ></Route> 
+          <Route path='/RegisterOption2' element={<RegisterGoogleForm />} ></Route> 
+          <Route path='/RegisterOptions' element={<RegisterOptions/>}></Route>
+          
 
         </Routes>
       </div>

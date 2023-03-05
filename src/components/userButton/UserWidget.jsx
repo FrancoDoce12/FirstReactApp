@@ -27,7 +27,7 @@ function UserWidget() {
                         </>
                         :
                         <>
-                            <Link1 to={'/Register'} hide={hide} >Register</Link1>
+                            <Link1 to={'/RegisterOptions'} hide={hide} >Register</Link1>
                             <Link1 to={'/LogIn'} >LogIn</Link1>
                         </>
                     // <Button1 link={'/Register'} >Submit Registration</Button1>
@@ -39,6 +39,7 @@ function UserWidget() {
     //thean return a loading element
     return (
         <>
+        <h3>LOADING...</h3>
         </>
     )
 

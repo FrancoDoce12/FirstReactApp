@@ -61,8 +61,8 @@ let inputId = 0
             
             event.preventDefault()
             setFormState("loading")
-            let caca = await onSubmit(imputsValues, localContext, event)
-            if (caca) {
+            let submitResult = await onSubmit(imputsValues, localContext, event)
+            if (submitResult) {
                 setFormState("succsesful")
             } else {
                 setFormState("error")

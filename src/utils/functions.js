@@ -3,7 +3,9 @@ import { useContext } from 'react';
 import { AppContext } from '../context/context';
 import { auth } from '../firebase/config';
 import { db } from '../firebase/config';
-import { getUserByEmail, getUserIdByEmail, getProducts, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber, getProductsByCategories } from '../firebase/functions';
+import { getUserByEmail, getUserIdByEmail, getProducts, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber, getProductsByCategories, registerUserInFirebase, getCurrentUser, sendEmailVerificationUser } from '../firebase/functions';
+
+
 
 function isIterable(obj) {
     // checks for null and undefined
@@ -188,27 +190,61 @@ async function deleteUserDataInContext(context) {
 // special test function
 
 async function test() {
-
-    // let data = await getProductsByCategories(["red"])
-
-    // console.log(data, "la data obtenida")
-    // console.log(data.docs, "data docs")
-    // data.forEach(item =>{
-    //     console.log(item,"item")
-    // })
-
-
-
-
-    // let data = await getProducts() 
-    // data.forEach(img => {
-    //     console.log(img.data())
-    // });
-    // console.log(await data, "data form test")
-    // console.log((await data).docs, "data docs")
-    // console.log(await data.data(), "data 1 con await")
 }
 
 
 
-export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, logInUser }
+
+
+// Functions related to the google acount registraition
+
+const userGoogleRegister = async (user) => {
+
+    if (!userValidation(user)) {
+        return false
+    }
+
+    const credentials = await registerUserInFirebase(user.email, user.password1)
+
+    const newUser = credentials.user
+    await sendEmailVerificationUser(newUser)
+
+    return true
+
+}
+
+const userValidation = (user) => {
+    //TODO
+    
+    if (user.password1 && user.email) {
+        return true
+    } else {
+        return false
+    }
+}
+
+// functions related to both register sistems
+
+const userIsRegisted = (userEmail)=>{
+    if (getUserByEmail(userEmail)){ //|| todo
+        true
+    }
+    
+    return false
+}
+
+const generalLogin = (user, context) => {
+    // chech if the user is loged in the normal way
+    
+    if (!userIsRegisted(user.email)) {
+        return false
+        //trow notifications
+    }
+    
+    return true
+}
+
+
+
+
+export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, logInUser, userGoogleRegister, generalLogin }
