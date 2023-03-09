@@ -1,7 +1,7 @@
-import { userGoogleRegister } from "../../utils/functions";
-import Form from "./From";
+import Form from "./from";
+import { registerUser } from "../../utils/users"; 
 
-function RegisterGoogleForm() {
+function RegisterUserForm() {
     return (
         <Form
             inputs={
@@ -11,6 +11,12 @@ function RegisterGoogleForm() {
                         type: "email",
                         name: "email",
                         placeholder: "example@gmail.com"
+                    },
+                    {
+                        labelText: "Acount Name: ",
+                        type: "text",
+                        name: "name",
+                        placeholder: "my name 123"
                     },
                     {
                         labelText: "Password: ",
@@ -25,10 +31,10 @@ function RegisterGoogleForm() {
                         placeholder: ""
                     },
                 ]
-            } onSubmit={async (user, context, event) => {
-                return await userGoogleRegister(user)
+            } onSubmit={async (formUser, context, event) => {
+                return await registerUser(formUser, context)
             }} />
     )
 }
 
-export default RegisterGoogleForm
+export default RegisterUserForm

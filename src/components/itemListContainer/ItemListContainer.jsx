@@ -1,8 +1,7 @@
 import './ItemListContainer.css'
 import ItemComponent from '../itemComponent/itemComponent'
-import database from '../database'
 import { useParams } from 'react-router-dom'
-import { getProducts, getProductsByCategories } from '../../firebase/functions'
+import { getProducts, getProductsByCategories } from '../../firebase/utils/products'
 import { useEffect, useState } from 'react'
 
 

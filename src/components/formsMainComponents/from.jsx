@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/context";
-import { registerUser } from "../../utils/functions";
 import FormNotificationContainer from "../formNotificationContainer/formNotificationContainer";
 import RegisterInput from "../registerImput/RegisterInput";
 import SubmitButton from "../submitButton/submitButton";

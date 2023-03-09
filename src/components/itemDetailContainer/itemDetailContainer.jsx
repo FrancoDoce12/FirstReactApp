@@ -1,6 +1,6 @@
 import './itemDetailContainer.css'
 import {useParams} from 'react-router-dom'
-import { getProductById } from '../../firebase/functions'
+import { getProductById } from '../../firebase/utils/products'
 import { useEffect, useState } from 'react'
 
 function ItemDetailContainer (){

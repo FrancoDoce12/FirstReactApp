@@ -3,10 +3,9 @@ import Link1 from '../buttons/Link1'
 import Button1 from '../buttons/Button1'
 import { useContext, useState, useEffect } from 'react'
 import { AppContext } from '../../context/context'
-import { closeUserSession } from '../../utils/functions'
 import { useLocation } from 'react-router-dom';
 
-
+const closeUserSession = () => true
 
 function UserWidget() {
 
