@@ -1,6 +1,6 @@
 import './itemDetailContainer.css'
 import {useParams} from 'react-router-dom'
-import { getItemById } from '../../firebase/functions'
+import { getProductById } from '../../firebase/functions'
 import { useEffect, useState } from 'react'
 
 function ItemDetailContainer (){
@@ -11,7 +11,7 @@ function ItemDetailContainer (){
 
     useEffect(()=>{
         async function getItem(){
-            setItem((await getItemById(params.id,"Productos/")).data())
+            setItem((await getProductById(params.id)).data())
         }
         getItem()
     }, [])

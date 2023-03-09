@@ -1,9 +1,16 @@
-import { getFirestore, doc, addDoc, collection, getDocs, getDoc, query, where, updateDoc } from 'firebase/firestore';
-import { useContext } from 'react';
-import { AppContext } from '../context/context';
-import { auth } from '../firebase/config';
-import { db } from '../firebase/config';
-import { getUserByEmail, getUserIdByEmail, getProducts, getUserRef, getUserById, getUserRefByID, registerUserInDb, updateUserSessionNumber, getProductsByCategories, registerUserInFirebase, getCurrentUser, sendEmailVerificationUser } from '../firebase/functions';
+import { getDoc, updateDoc } from 'firebase/firestore';
+import { userExists, getUserRef } from '../firebase/functions';
+
+
+const sessionNumberKey = "sessionNumber"
+const userIdKey = "userId"
+
+const setIntoLocalStorage = (key, data) => {
+    localStorage.setItem(key, JSON.stringify(data))
+}
+const getFromLocalStorage = (key) => {
+    return JSON.parse(localStorage.getItem(key))
+}
 
 
 
@@ -20,122 +27,112 @@ function getRandomNumberBetween(min, max) {
 }
 
 
-function checkPasswords(password1, password2) {
-    return password1 == password2
+function validatePasswords(password1, password2) {
+    if (validatePassword(password1)) {
+        return password1 == password2
+    }
+    return false
 }
 
-//
+const validatePassword = (password) => {
+    // this function is intended to be used by all types of accounts
+    // make more complex validation here
+    if (password) {
+        return true
+    }
+    return false
+}
+
+const validateDbPassword = (userSnapshot, userPassword) => {
+    // write more complex validation here
+    const userDbPassword = userSnapshot.data().password
+    if (userDbPassword == userPassword) {
+        return true
+    }
+    return false
+}
+
 
 function getNewSessionNumber() {
     return getRandomNumberBetween(0, Number.MAX_SAFE_INTEGER)
 }
 
-// save the session number in local storage and the same number in the db
-// if the session is open in the database, request again the password and then change the session code
-// the session code is a random number
 
-//check always if the session code saved in the local storage it is the same than the session code in database
-
-// doc(getFirestore(),"Users","")
-async function comprobationUserRegistration(formUser) {
-    console.log("dentro de la comprobacion de usuario:")
+async function userValidation(formUser) {
 
     if ((!formUser.email) && (!formUser.name) && (!formUser.password1) && (!formUser.password2)) {
         console.error(`User: ${formUser} is a invalid user`)
         return false
     }
 
-
-
-    let userByEmail = await getUserByEmail(formUser.email)
-    console.log(userByEmail, "es lo que esta comprobando")
-    if (userByEmail) {
-
-        console.log("dio verdadero")
+    if (await userExists(formUser.email)) {
         console.error(`Email ${formUser.email} alredy on use`)
         return false
-    } else {
-        console.log("dio falso")
     }
 
+    if (!(validatePasswords(formUser.password1, formUser.password2))) {
+        return false
+    }
+    return true
+}
 
-    // i dont know if its okay to check the first and the second password here
-    // i think not, maybe its better to meake a special function and add complexity to
-    // it and add some email verification to finaly register the accaunt in the DB
-    // but it is not a serius web apliction
-    if (!(formUser.password1 == formUser.password2)) {
-        console.error(`User fist password and second password should be the same`)
+const registerUser = async (formUser) => {
+
+    if (await userValidation(formUser)) {
+        await saveUser(formUser)
+        return true
+    }
+    return false
+}
+
+const logInUser = async (userEmail, userPassword, context) => {
+    //this function is used when a user is register and when is log in 
+
+    const userRef = getUserRef(userEmail)
+    const userSnapshot = await getDoc(userRef)
+    if (validateDbPassword(userSnapshot, userPassword)) {
+        openUserSession(userRef, userSnapshot, context)
+        return true
+    }
+    return false
+}
+
+async function registerAndLogInUser(formUser, context) {
+
+    if (!await registerUser(formUser)) {
+        return false
+    }
+
+    if (!await logInUser(formUser.email, formUser.password, context)) {
         return false
     }
     return true
 }
 
 
-async function registerUser(formUser, context, logInUser = true) {
 
-    console.log("comprobacion de usuario:", comprobationUserRegistration(formUser))
+async function openUserSession(userRef, userSnapshot, context) {
 
-    if (await comprobationUserRegistration(formUser)) {
+    const newSessionNumber = getNewSessionNumber()
 
-        console.log("comprobacion de usuario:", await comprobationUserRegistration(formUser), "ruvo que haber sido true")
-        await registerUserInDb(formUser)
+    await updateDoc(userRef, { sessionNumber: newSessionNumber })
 
-        if (logInUser) {
-            console.log("logInUser se ejecuta")
-            let loco = await openUserSession(formUser.email, context)
-            console.log(loco)
-        }
+    setIntoLocalStorage(sessionNumberKey, newSessionNumber)
+    setIntoLocalStorage(userIdKey, userSnapshot.id)
 
-        return true
-    }
-    console.log("registerUser tuvo que retornar false")
-    return false
-
-}
-
-
-async function logInUser(user, context) {
-    // this user just should have the email and the password
-    const userData = (await getUserByEmail(user.email)).data()
-    //checksPassword() isn't a function because it didn't need more complexity for now
-    if ((userData.password == user.password)) {
-        openUserSession(user.email, context)
-        return true
-    }
-    return false
-
-    // here it can return a notification object to use as notification
-
-}
-
-async function openUserSession(userEmail, context) {
-
-    const sessionNumber = getNewSessionNumber()
-
-
-    await updateUserSessionNumber(userEmail, { sessionNumber })
-
-
-    const userFromDb = await getUserByEmail(userEmail)
-
-    console.log("opening user session")
-
-    localStorage.setItem('sessionNumber', JSON.stringify(sessionNumber))
-    localStorage.setItem('userId', JSON.stringify(userFromDb.id))
-
-    await saveUserDataInContext(userFromDb, context)
+    await saveUserDataInContext(userSnapshot, context)
 }
 
 async function closeUserSession(context) {
 
-    const userRef = await getUserRef(context.user.email)
+    const userRef = getUserRef(context.user.email)
 
     if (userRef) {
         await updateDoc(userRef, { sessionNumber: null })
     }
 
-    localStorage.setItem('sessionNumber', JSON.stringify(false))
-    localStorage.setItem('userId', JSON.stringify(false))
+    setIntoLocalStorage(sessionNumberKey, false)
+    setIntoLocalStorage(userIdKey, false)
 
     await deleteUserDataInContext(context)
 
@@ -144,33 +141,34 @@ async function closeUserSession(context) {
 
 
 
-async function checkUserSession(context) {
+async function isUserSessionOpen(context) {
+    // checks if the user is log in into this computer
+    // if its logged into another computer it will close the actual session
 
-    const localSessionNumber = JSON.parse(localStorage.getItem('sessionNumber'))
-    const localUserID = JSON.parse(localStorage.getItem('userId'))
+    const localSessionNumber = getFromLocalStorage(sessionNumberKey)
+    const localUserID = getFromLocalStorage(userIdKey)
 
 
     if (localSessionNumber && localUserID) {
 
-        const userRef = getUserRefByID(localUserID)
-        const userFromDb = await getDoc(userRef)
+        const userRef = getUserRef(localUserID)
+        const userSnapshot = await getDoc(userRef)
 
-        if (localSessionNumber == userFromDb.data().sessionNumber) {
+        if (localSessionNumber == userSnapshot.data().sessionNumber) {
 
-            await saveUserDataInContext(userFromDb, context)
+            await saveUserDataInContext(userSnapshot, context)
             await setNewSessionNumber(userRef)
-
+            return true
         }
     }
-    context.setIsUserSessionCheck(true)
 
+    return false
 }
+
 async function setNewSessionNumber(userRef) {
     const sessionNumber = getNewSessionNumber()
-    localStorage.setItem('sessionNumber', JSON.stringify(sessionNumber))
+    setIntoLocalStorage(sessionNumberKey, sessionNumber)
     await updateDoc(userRef, { sessionNumber: sessionNumber })
-    // trow some error if the update fails
-
 }
 
 
@@ -204,47 +202,44 @@ const userGoogleRegister = async (user) => {
         return false
     }
 
-    const credentials = await registerUserInFirebase(user.email, user.password1)
+    const credentials = await saveFirebaseUser(user.email, user.password1)
 
     const newUser = credentials.user
-    await sendEmailVerificationUser(newUser)
+    await sendEmailVerificationFirabeseUser(newUser)
 
     return true
 
 }
 
-const userValidation = (user) => {
-    //TODO
-    
-    if (user.password1 && user.email) {
-        return true
-    } else {
-        return false
-    }
-}
 
 // functions related to both register sistems
-
-const userIsRegisted = (userEmail)=>{
-    if (getUserByEmail(userEmail)){ //|| todo
-        true
-    }
+const isUserFirebaseAccount = (userEmail) =>{
     
+}
+const isUserDocumentAccount = (userEmail) =>{
+    return userExists(userEmail)
+}
+
+const userIsRegisted = (userEmail) => {
+    if (getUserRef(userEmail)) { //|| todo
+        return true
+    }
+
     return false
 }
 
 const generalLogin = (user, context) => {
     // chech if the user is loged in the normal way
-    
+
     if (!userIsRegisted(user.email)) {
         return false
         //trow notifications
     }
-    
+
     return true
 }
 
 
 
 
-export { registerUser, checkPasswords, test, getUserByEmail, checkUserSession, isIterable, closeUserSession, logInUser, userGoogleRegister, generalLogin }
+export {  }

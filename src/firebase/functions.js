@@ -1,89 +1,118 @@
 import { db, auth } from "./config";
-import { query, collection, where, doc, getDoc, getDocs, addDoc, updateDoc, fild } from "firebase/firestore";
+import { query, collection, where, doc, getDoc, getDocs, addDoc, updateDoc, fild, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 
 const usersRoute = "usersDocuments"
+const firestoreUsersRoute = "users"
 const prodcutsRoute = "Productos"
 
+// i am not sure if the next 3 functions are totally needed
+
+const testFirestoreFunctions = async () => {
+    const collectionQuery = await getDocs(collection(db, firestoreUsersRoute))
+    console.log(collectionQuery.docs)
+
+}
+
+const getCollection = (colllectionRoute) => {
+    return collection(db, colllectionRoute)
+}
+
+const getProductsCollection = () => {
+    return getCollection(prodcutsRoute)
+}
+
+const getUsersCollection = () => {
+    return getCollection(usersRoute)
+}
+
+const getFirestoreUsersCollection = () =>{
+    getCollection(firestoreUsersRoute)
+}
+
+const getDocRefById = (collectionRute, docId) => {
+    return doc(db, `${collectionRute}/${docId}`)
+}
+
+const getDocById = async (collectionRute, docId) => {
+    return await getDoc(getDocRefById(collectionRute, docId))
+}
+
+const getProductById = async (id) => {
+    return await getDocById(prodcutsRoute, id)
+}
+
+const getUserById = async (id) => {
+    return await getDocById(usersRoute, id)
+}
+
+const getFirebaseUserById = async (id) => {
+    getDocById(firestoreUsersRoute,id)
+}
+
+const userExists = async (userEmail) => {
+    const docSnapshot = await getUserById(userEmail)
+    return docSnapshot.exists()
+}
+
+const firebaseUserExists = async (id) => {
+    const docSnapshot = await getFirebaseUserById(id)
+    return docSnapshot.exists()
+}
+
 async function getProducts() {
-    return (await getDocs(collection(db, prodcutsRoute))).docs.map(item => {
+    return (await getDocs(getProductsCollection())).docs.map(item => {
         return { ...item.data(), id: item.id }
     })
 }
 
 async function getProductsByCategories(categories) {
-    return (await getDocs(query(collection(db, prodcutsRoute), where('categories', 'array-contains-any', [categories])))).docs.map(item => {
+    return (await getDocs(query(getProductsCollection(), where('categories', 'array-contains-any', [categories])))).docs.map(item => {
         return { ...item.data(), id: item.id }
     })
 }
 
-async function getUserByEmail(userEmail) {
-    return (await getDocs(query(collection(db, usersRoute), where('email', '==', userEmail)))).docs[0]
+
+
+
+const getUserRef = (userEmailId) => {
+    return getDocRefById(usersRoute, userEmailId)
 }
 
-async function test(userEmail){
-    console.log(userEmail)
-
-    await addDoc(collection(db, usersRoute), {
-        name: "formUser.name",
-        email: userEmail,
-        password: "formUser.password1"
-    })
-    console.log("paso 1")
-
-    let resultado = await getDoc(query(collection(db, usersRoute), where('email', '==', userEmail)))
-    console.log(resultado,"resultado")
+const saveDocCustomId = async (collection, customId, documentData = {}) => {
+    let document = doc(collection, customId)
+    await setDoc(document, documentData)
 }
 
 
-async function getItemById(id, route) {
-    return await getDoc(doc(db, `${route}${id}`))
-}
-async function getUserIdByEmail(userEmail) {
-    return (await getUserByEmail(userEmail).id)
-}
-
-
-async function getUserRef(userEmail) {
-    let userInDb = await getUserByEmail(userEmail)
-    return doc(db, usersRoute, `${userInDb.id}`)
-}
-
-function getUserRefByID(userID) {
-    return doc(db, `${usersRoute}/${userID}`)
-}
-
-async function registerUserInDb(formUser) {
-
-    await addDoc(collection(db, usersRoute), {
+async function saveUser(formUser) {
+    const userData = {
+        password: formUser.password1,
         name: formUser.name,
-        email: formUser.email,
-        password: formUser.password1
-    })
+        email: formUser.email
+    }
+    await saveDocCustomId(getUsersCollection(), formUser.email, userData)
 }
 
-async function updateUserSessionNumber(userEmail, dataOfSessionNumber) {
-
-    let userRef = await getUserRef(userEmail)
+async function updateUserSessionNumber(userRef, dataOfSessionNumber) {
     return await updateDoc(userRef, dataOfSessionNumber)
-    
 }
 
 // ----------------- functions related to the google user registraition -----------------
 
 
-const registerUserInFirebase = async (userEmail, userPassword) => {
+const saveAndRegisterFirebaseUser = async (userEmail, userPassword) => {
     return await createUserWithEmailAndPassword(auth, userEmail, userPassword)
 }
 
-const getCurrentUser = () => {
+const getCurrentFirebaseUser = () => {
     return auth.currentUser
 }
 
-const sendEmailVerificationUser = async (user) => {
-    return await sendEmailVerification(user)
+const sendEmailVerificationFirabeseUser = async (firebaseUser) => {
+    return await sendEmailVerification(firebaseUser)
 }
-const loginWithEmailAndPassword = async (email, password) => {
+const loginFirebaseUser = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(email, password)
         const user = userCredential.user
@@ -96,4 +125,8 @@ const loginWithEmailAndPassword = async (email, password) => {
 
 
 
-export { getUserByEmail, getUserIdByEmail, getUserRef, registerUserInDb, updateUserSessionNumber, getUserRefByID, getProducts, getProductsByCategories, getItemById, registerUserInFirebase, getCurrentUser, sendEmailVerificationUser, loginWithEmailAndPassword, test }
+async function test(customId) {
+    saveDocCustomId(getUsersCollection(), customId)
+}
+
+export { userExists, getUserRef, saveUser, getProducts, getProductById, getProductsByCategories, testFirestoreFunctions }

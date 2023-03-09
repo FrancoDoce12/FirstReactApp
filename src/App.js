@@ -13,6 +13,7 @@ import RegisterForm from './components/formsComponents/registerForm';
 import LogInForm from './components/formsComponents/logInForm';
 import RegisterOptions from './components/registerOptions/registerOptions';
 import RegisterGoogleForm from './components/formsComponents/registerGoogleForm';
+import { testFirestoreFunctions } from './firebase/functions';
 
 import { test } from './firebase/functions';
 
@@ -23,8 +24,9 @@ function App() {
   let context = useContext(AppContext)
 
   useEffect(() => {
-    checkUserSession(context)
-    //test("holaaa@gmil.com")
+    // checkUserSession(context)
+    //test("idDelDocumento")
+    testFirestoreFunctions()
     
   }, []);
 
