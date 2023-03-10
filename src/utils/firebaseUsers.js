@@ -38,5 +38,5 @@ const firebaseTest = async () =>{
     console.log(caca.emailVerified)
 }
 
-export {firebaseUserRegister, firebaseTest, firebaseUserLogin}
+export {firebaseUserRegister, firebaseTest, firebaseUserLogin, firebaseUserSingOut}
 

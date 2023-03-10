@@ -1,7 +1,7 @@
 import { userExists } from "../firebase/utils/users";
-import { firebaseUserLogin } from "./firebaseUsers";
+import { firebaseUserLogin, firebaseUserSingOut } from "./firebaseUsers";
 import { getCurrentUserType } from "./main"
-import { closeUserSession, logInUser } from "./users";
+import { closeUserSession, logInUser, verifyUserSession } from "./users";
 
 const closeGeneralUserSession = async (context) => {
     switch (await getCurrentUserType(context)) {
@@ -24,6 +24,9 @@ const generalLogIn = async (userEmail, userPassword, context) => {
     }
 }
 
-
+const checkGeneralUserSession = (context) =>{
+    verifyUserSession(context)
+    // continue here
+}
 
 export { closeGeneralUserSession, generalLogIn }

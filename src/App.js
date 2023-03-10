@@ -10,6 +10,7 @@ import LogInForm from './components/formsMainComponents/logInForm';
 import RegisterOptions from './components/registerOptions/registerOptions';
 import RegisterFirestoreUserForm from './components/formsMainComponents/registerFirestoreUserForm';
 import { firebaseTest } from './utils/firebaseUsers';
+import { auth } from './firebase/config';
 
 
 
@@ -19,6 +20,9 @@ function App() {
   let context = useContext(AppContext)
 
   useEffect(() => {
+    auth.onAuthStateChanged((user)=>{
+      
+    })
     // checkUserSession(context)
     //test("idDelDocumento")
     //firebaseTest()
@@ -41,8 +45,7 @@ function App() {
           <Route path='/LogInoptions' element={<LogInForm />} ></Route>
           <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route> 
           <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route> 
-          <Route path='/RegisterOptions' element={<RegisterOptions/>}></Route>
-          
+          <Route path='/RegisterOptions' element={<RegisterOptions/>} ></Route>
 
         </Routes>
       </div>

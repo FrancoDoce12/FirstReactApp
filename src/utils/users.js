@@ -101,4 +101,36 @@ const isUserDocumentAccount = (userEmail) => {
     return userExists(userEmail)
 }
 
-export { logInUser, registerUser, closeUserSession }
+
+
+
+async function verifyUserSession(context) {
+
+    const localSessionNumber = getFromLocalStorage(sessionNumberKey)
+    const localUserEmailID = getFromLocalStorage(userIdKey)
+
+
+    if (localSessionNumber && localUserEmailID) {
+
+        const userRef = getUserRef(localUserEmailID)
+        const userSnapshot = await getDoc(userRef)
+
+        if (localSessionNumber == userSnapshot.data().sessionNumber) {
+
+            await saveUserDataInContext(userSnapshot, context)
+            await setNewSessionNumber(userRef)
+
+            return true // returns true becouse the session was verify succsesfuly
+        }
+
+    }
+    await closeUserSession(context)
+    context.setIsUserSessionCheck(true)
+
+    return false
+}
+
+
+
+
+export { logInUser, registerUser, closeUserSession, verifyUserSession }
