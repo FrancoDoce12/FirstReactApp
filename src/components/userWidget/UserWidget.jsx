@@ -6,22 +6,29 @@ import { AppContext } from '../../context/context'
 import { useLocation } from 'react-router-dom';
 import { closeGeneralUserSession } from '../../utils/general'
 
-const closeUserSession = () => true
 
 function UserWidget() {
 
     const hide = useLocation().pathname == '/Register'
+    // hides the link if it is the path
 
     let context = useContext(AppContext)
+
+    let userNameToShow 
+    if (context.user.name) {
+        userNameToShow = context.user.name
+    } else {
+        userNameToShow = context.user.email
+    }
 
 
     if (context.isUserSessionCheck) {
         return (
             <>
                 {
-                    context.user.name ?
+                    context.user.email ?
                         <>
-                            <h3>{`Welcom User ${context.user.name}`}</h3> <Button1 onClick={() => {
+                            <h3>{`Welcom User ${userNameToShow}`}</h3> <Button1 onClick={() => {
                                 closeGeneralUserSession(context)
                             }} >Log out</Button1>
                         </>
@@ -30,13 +37,12 @@ function UserWidget() {
                             <Link1 to={'/RegisterOptions'} hide={hide} >Register</Link1>
                             <Link1 to={'/LogIn'} >LogIn</Link1>
                         </>
-                    // <Button1 link={'/Register'} >Submit Registration</Button1>
                 }
             </>
         )
     }
 
-    //thean return a loading element
+    //meake a custom loading element to return
     return (
         <>
         <h3>LOADING...</h3>

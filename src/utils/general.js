@@ -16,13 +16,14 @@ const closeGeneralUserSession = async (context) => {
     }
 }
 
-const generalLogIn = async (userEmail, userPassword, context) =>{
-    if (userExists(userEmail)){
+const generalLogIn = async (userEmail, userPassword, context) => {
+    if (userExists(userEmail)) {
         return await logInUser(userEmail, userPassword, context)
     } else {
         return await firebaseUserLogin(userEmail, userPassword, context)
     }
-
 }
 
-export {closeGeneralUserSession, generalLogIn}
+
+
+export { closeGeneralUserSession, generalLogIn }

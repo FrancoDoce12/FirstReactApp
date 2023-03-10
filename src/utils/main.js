@@ -1,5 +1,5 @@
 import { getDoc, updateDoc } from 'firebase/firestore';
-import {  getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
+import { getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
 import { getUserById, userExists } from '../firebase/utils/users';
 
 const sessionNumberKey = "sessionNumber"
@@ -57,7 +57,7 @@ function validateRegisterPasswords(password1, password2) {
 }
 
 const validateDbPassword = (userSnapshot, userPassword) => {
-    if (userSnapshot.exist()){
+    if (userSnapshot.exist()) {
         const userDbPassword = userSnapshot.data().password
         return validateTwoPasswords(userDbPassword, userPassword)
     }
@@ -85,19 +85,19 @@ async function userValidation(formUser) {
 }
 
 
-const getCurrentUserType = async (context) =>{
+const getCurrentUserType = async (context) => {
 
     const userEmail = context.user.email
-        if (!userEmail) {
-            return false
-        }
-    if (getCurrentFirebaseUser()){
+    if (!userEmail) {
+        return false
+    }
+    if (getCurrentFirebaseUser()) {
         return 'firestoreUser'
     }
-    if ((await userExists(userEmail))){
+    if ((await userExists(userEmail))) {
         return 'documentUser'
     }
-    
+
     return false
 }
 

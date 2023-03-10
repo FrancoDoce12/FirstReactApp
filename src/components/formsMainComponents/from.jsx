@@ -13,11 +13,11 @@ function Form({ inputs, onSubmit = () => { } }) {
     const imputsToLoad = []
     const imputsValues = {}
 
-    // despues fijarse que hacer o convertir en un estado para mejorar el rendimiento del elemento
+    // imputsToLoad culd be a useState and de next part dawn the code culd be in a useEffect without dependendy
+    // just for more performance
 
 let inputId = 0
     inputs.forEach(input => {
-        // aca tengo que crear los use states y ponerlos dentro de "imputsValues" para que sean usados por la funcion de abajo y guardar los 2 dentro de un objeto u otro array
         imputsToLoad.push(
             <RegisterInput
                 labelText={input.labelText} key={inputId} type={input.type} name={input.name} placeholder={input.placeholder}
