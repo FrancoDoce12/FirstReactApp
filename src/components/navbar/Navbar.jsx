@@ -1,10 +1,7 @@
 import './Navbar.css'
 import CarWidget from '../carWidget/CarWidget'
 import { Link } from 'react-router-dom'
-import { getFirestore, doc, addDoc, collection } from 'firebase/firestore'
-import { useContext, useState } from 'react'
-import { AppContext } from '../../context/context'
-import UserWidget from '../userButton/UserWidget'
+import UserWidget from '../userWidget/UserWidget'
 
 
 

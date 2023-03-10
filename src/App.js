@@ -9,6 +9,7 @@ import RegisterUserForm from './components/formsMainComponents/registerUserForm'
 import LogInForm from './components/formsMainComponents/logInForm';
 import RegisterOptions from './components/registerOptions/registerOptions';
 import RegisterFirestoreUserForm from './components/formsMainComponents/registerFirestoreUserForm';
+import { firebaseTest } from './utils/firebaseUsers';
 
 
 
@@ -20,7 +21,7 @@ function App() {
   useEffect(() => {
     // checkUserSession(context)
     //test("idDelDocumento")
-    
+    //firebaseTest()
     
   }, []);
 

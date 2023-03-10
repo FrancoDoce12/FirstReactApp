@@ -1,26 +1,27 @@
 import { db, auth } from "../config";
-import { getCollection, getDocById, getDocRefById, saveDocCustomId } from "./main"
+import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth"
-
 
 
 const firestoreUsersRoute = "users"
 
+// need some api rest for using the firestore auth users info, i need the firestore-admin
 
-const getFirestoreUsersCollection = () => {
-    getCollection(firestoreUsersRoute)
+
+const getFirestoreUsersCollectionRef = () => {
+    return getCollectionRef(firestoreUsersRoute)
 }
 
 const getFirebaseUserById = async (id) => {
-    getDocById(firestoreUsersRoute, id)
+    // need api rest for things like that
+    // return await getDocById(firestoreUsersRoute, id)
 }
 
-const firebaseUserExists = async (id) => {
-    // TODO
-    // hacer que en base al mail haga esto 
-    const docSnapshot = await getFirebaseUserById(id)
-    return docSnapshot.exists()
-}
+// const firebaseUserExists = async (id) => {
+//     // TODO
+//     const docSnapshot = await getFirebaseUserById(id)
+//     return docSnapshot.exists()
+// }
 
 
 const saveAndRegisterFirebaseUser = async (userEmail, userPassword) => {
@@ -40,13 +41,13 @@ const signInFirebaseUser = async (email, password) => {
     return await signInWithEmailAndPassword(auth, email, password)
 }
 
-const singOutFirebaseUser = async () =>{
+const singOutFirebaseUser = async () => {
     return await signOut(auth)
 }
 
-const getFirebaseUserByEmail = async () =>{
-    
+const getFirebaseUserByEmail = async () => {
+    // need api rest for more things in the back end
 }
 
 
-export { firebaseUserExists, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser }
+export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser }

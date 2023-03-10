@@ -1,4 +1,4 @@
-import { getCollection, getDocById, getDocRefById, saveDocCustomId } from "./main"
+import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 import { updateDoc } from "firebase/firestore"
 
 
@@ -6,12 +6,12 @@ const usersRoute = "usersDocuments"
 
 
 
-const getUsersCollection = () => {
-    return getCollection(usersRoute)
+const getUsersCollectionRef = () => {
+    return getCollectionRef(usersRoute)
 }
 
-const getUserById = async (id) => {
-    return await getDocById(usersRoute, id)
+const getUserById = async (emailId) => {
+    return await getDocById(usersRoute, emailId)
 }
 
 const userExists = async (userEmail) => {
@@ -29,7 +29,7 @@ async function saveUser(formUser) {
         name: formUser.name,
         email: formUser.email
     }
-    await saveDocCustomId(getUsersCollection(), formUser.email, userData)
+    await saveDocCustomId(getUsersCollectionRef(), formUser.email, userData)
 }
 
 async function updateUserSessionNumber(userRef, dataOfSessionNumber) {

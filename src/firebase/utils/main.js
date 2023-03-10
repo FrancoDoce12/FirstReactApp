@@ -1,7 +1,5 @@
 import { db, auth } from "../config";
 import { query, collection, where, doc, getDoc, getDocs, addDoc, updateDoc, fild, setDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
-
 
 
 const getDocRefById = (collectionRute, docId) => {
@@ -17,7 +15,7 @@ const saveDocCustomId = async (collection, customId, documentData = {}) => {
     await setDoc(document, documentData)
 }
 
-const getCollection = (colllectionRoute) => {
+const getCollectionRef = (colllectionRoute) => {
     return collection(db, colllectionRoute)
 }
 
@@ -26,4 +24,4 @@ const test = (argument) => {
 }
 
 
-export { getCollection, getDocRefById, getDocById, saveDocCustomId }
+export { getCollectionRef, getDocRefById, getDocById, saveDocCustomId }

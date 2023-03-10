@@ -1,4 +1,4 @@
-import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey } from "./main";
+import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext } from "./main";
 import { getUserRef } from "../firebase/utils/users";
 
 
@@ -46,7 +46,7 @@ async function openUserSession(userRef, userSnapshot, context) {
     setIntoLocalStorage(sessionNumberKey, newSessionNumber)
     setIntoLocalStorage(userIdKey, userSnapshot.id)
 
-    await saveUserDataInContext(userSnapshot, context)
+    await saveUserDataInContext(userSnapshot.data(), context)
 }
 
 async function closeUserSession(context) {
@@ -82,7 +82,7 @@ async function isUserSessionOpen(context) {
 
         if (localSessionNumber == userSnapshot.data().sessionNumber) {
 
-            await saveUserDataInContext(userSnapshot, context)
+            await saveUserDataInContext(userSnapshot.data(), context)
             await setNewSessionNumber(userRef)
             return true
         }
@@ -101,4 +101,4 @@ const isUserDocumentAccount = (userEmail) => {
     return userExists(userEmail)
 }
 
-export { logInUser, registerUser }
+export { logInUser, registerUser, closeUserSession }

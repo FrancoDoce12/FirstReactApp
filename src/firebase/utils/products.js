@@ -1,10 +1,11 @@
-import { getCollection, getDocById, getDocRefById, saveDocCustomId } from "./main"
+import { getDocs, query, where } from "firebase/firestore"
+import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 
 const prodcutsRoute = "Productos"
 
 
-const getProductsCollection = () => {
-    return getCollection(prodcutsRoute)
+const getProductsCollectionRef = () => {
+    return getCollectionRef(prodcutsRoute)
 }
 
 const getProductById = async (id) => {
@@ -12,13 +13,13 @@ const getProductById = async (id) => {
 }
 
 async function getProducts() {
-    return (await getDocs(getProductsCollection())).docs.map(item => {
+    return (await getDocs(getProductsCollectionRef())).docs.map(item => {
         return { ...item.data(), id: item.id }
     })
 }
 
 async function getProductsByCategories(categories) {
-    return (await getDocs(query(getProductsCollection(), where('categories', 'array-contains-any', [categories])))).docs.map(item => {
+    return (await getDocs(query(getProductsCollectionRef(), where('categories', 'array-contains-any', [categories])))).docs.map(item => {
         return { ...item.data(), id: item.id }
     })
 }

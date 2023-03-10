@@ -1,6 +1,5 @@
 import Form from "./from";
-import { getUserType } from "../../utils/main";
-import { logInUser } from "../../utils/users";
+import { generalLogIn } from "../../utils/general";
 
 
 function LogInForm() {
@@ -28,13 +27,7 @@ function LogInForm() {
         ]}
             onSubmit={
                 async (userForm, context, event) => {
-                    const userType = await getUserType(userForm.email)
-                    if (userType == 'documentUser') {
-                        return await logInUser(userForm, context)
-                    }
-                    if (userType == "firebaseUser") {
-                        return await "a"
-                    }
+                    return await generalLogIn(userForm.email,userForm.password, context)
                 }
             } />
     )

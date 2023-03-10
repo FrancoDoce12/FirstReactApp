@@ -1,23 +1,23 @@
-import { saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, sign, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
-import { deleteUserDataInContext, userValidation } from "./main"
+import { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
+import { deleteUserDataInContext, saveUserDataInContext, userValidation } from "./main"
 
 
-const firebaseUserRegister = async (user) => {
-    if (!userValidation(user)) {
+const firebaseUserRegister = async (formUser) => {
+    if (!userValidation(formUser)) {
         return false
     }
 
-    const credentials = await saveAndRegisterFirebaseUser(user.email, user.password1)
+    const credentials = await saveAndRegisterFirebaseUser(formUser.email, formUser.password1)
     const newUser = credentials.user
     await sendEmailVerificationFirabeseUser(newUser)
 
     return true
 }
 
-const firebaseUserLogin = async (email, password) => {
+const firebaseUserLogin = async (email, password, context) => {
     try {
         const userCredential = await signInFirebaseUser(email, password)
-        // Realizar acciones adicionales después del inicio de sesión exitoso
+        saveUserDataInContext({email, password}, context)
         // guardarlo en el contexto
         return true
     } catch (error) {
@@ -27,10 +27,16 @@ const firebaseUserLogin = async (email, password) => {
     }
 }
 
-const firebaseUserSingOut = async () =>{
+const firebaseUserSingOut = async (context) =>{
     await singOutFirebaseUser()
-    await deleteUserDataInContext()
+    await deleteUserDataInContext(context)
 }
 
-export {firebaseUserRegister}
+const firebaseTest = async () =>{
+    const caca = getCurrentFirebaseUser()
+    console.log(caca)
+    console.log(caca.emailVerified)
+}
+
+export {firebaseUserRegister, firebaseTest, firebaseUserLogin}
 

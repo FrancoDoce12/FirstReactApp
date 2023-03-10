@@ -1,6 +1,6 @@
 import { getDoc, updateDoc } from 'firebase/firestore';
-import { firebaseUserExists } from '../firebase/utils/firebaseUsers';
-import { userExists } from '../firebase/utils/users';
+import {  getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
+import { getUserById, userExists } from '../firebase/utils/users';
 
 const sessionNumberKey = "sessionNumber"
 const userIdKey = "userId"
@@ -84,22 +84,25 @@ async function userValidation(formUser) {
     return true
 }
 
-const getUserType = async (userEmail) =>{
-    // returns true if the user exist in some type
-    // and returns false if it does not exists
-    if (await userExists(userEmail)) {
+
+const getCurrentUserType = async (context) =>{
+
+    const userEmail = context.user.email
+        if (!userEmail) {
+            return false
+        }
+    if (getCurrentFirebaseUser()){
+        return 'firestoreUser'
+    }
+    if ((await userExists(userEmail))){
         return 'documentUser'
     }
-    if (await firebaseUserExists()){
-        // TODO fireabase User Exist ????
-        return 'firebaseUser'
-    }
+    
     return false
 }
 
 
-async function saveUserDataInContext(userSnapshot, context) {
-    const userData = userSnapshot.data()
+async function saveUserDataInContext(userData, context) {
     await context.setUser({ email: userData.email, name: userData.name })
 }
 
@@ -111,5 +114,5 @@ async function deleteUserDataInContext(context) {
 
 
 
-export {setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, getUserType, saveUserDataInContext, deleteUserDataInContext }
+export { setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, getCurrentUserType }
 

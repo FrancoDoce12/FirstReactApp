@@ -4,6 +4,7 @@ import Button1 from '../buttons/Button1'
 import { useContext, useState, useEffect } from 'react'
 import { AppContext } from '../../context/context'
 import { useLocation } from 'react-router-dom';
+import { closeGeneralUserSession } from '../../utils/general'
 
 const closeUserSession = () => true
 
@@ -21,7 +22,7 @@ function UserWidget() {
                     context.user.name ?
                         <>
                             <h3>{`Welcom User ${context.user.name}`}</h3> <Button1 onClick={() => {
-                                closeUserSession(context)
+                                closeGeneralUserSession(context)
                             }} >Log out</Button1>
                         </>
                         :
