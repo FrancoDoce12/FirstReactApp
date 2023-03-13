@@ -9,8 +9,9 @@ import RegisterUserForm from './components/formsMainComponents/registerUserForm'
 import LogInForm from './components/formsMainComponents/logInForm';
 import RegisterOptions from './components/registerOptions/registerOptions';
 import RegisterFirestoreUserForm from './components/formsMainComponents/registerFirestoreUserForm';
-import { firebaseTest } from './utils/firebaseUsers';
+import { firebaseTest, saveFirebaseUserDataInContext } from './utils/firebaseUsers';
 import { auth } from './firebase/config';
+import { checkGeneralUserSession } from './utils/general';
 
 
 
@@ -20,13 +21,7 @@ function App() {
   let context = useContext(AppContext)
 
   useEffect(() => {
-    auth.onAuthStateChanged((user)=>{
-      
-    })
-    // checkUserSession(context)
-    //test("idDelDocumento")
-    //firebaseTest()
-    
+    checkGeneralUserSession(context)
   }, []);
 
   //
@@ -43,9 +38,9 @@ function App() {
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
           <Route path='/LogInoptions' element={<LogInForm />} ></Route>
-          <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route> 
-          <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route> 
-          <Route path='/RegisterOptions' element={<RegisterOptions/>} ></Route>
+          <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route>
+          <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route>
+          <Route path='/RegisterOptions' element={<RegisterOptions />} ></Route>
 
         </Routes>
       </div>

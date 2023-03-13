@@ -1,14 +1,19 @@
+import { auth } from "../firebase/config";
+import { getCurrentFirebaseUser } from "../firebase/utils/firebaseUsers";
 import { userExists } from "../firebase/utils/users";
-import { firebaseUserLogin, firebaseUserSingOut } from "./firebaseUsers";
+import { checkFirebaseUser, firebaseUserLogin, firebaseUserSingOut, saveFirebaseUserDataInContext, userTypeFirestore } from "./firebaseUsers";
 import { getCurrentUserType } from "./main"
-import { closeUserSession, logInUser, verifyUserSession } from "./users";
+import { closeUserSession, logInUser, verifyUserSession, userTypeDocument } from "./users";
+
+
+
 
 const closeGeneralUserSession = async (context) => {
     switch (await getCurrentUserType(context)) {
-        case "documentUser":
+        case userTypeDocument:
             await closeUserSession(context)
             break;
-        case "firestoreUser":
+        case userTypeFirestore:
             await firebaseUserSingOut(context)
             break;
         default:
@@ -24,9 +29,30 @@ const generalLogIn = async (userEmail, userPassword, context) => {
     }
 }
 
-const checkGeneralUserSession = (context) =>{
-    verifyUserSession(context)
-    // continue here
+const checkGeneralUserSession = async (context) => {
+
+    // just this declaration to know how is the object
+    let data = {
+        validation: false,
+        type: undefined
+    }
+
+    data = checkFirebaseUser(context)
+
+    if (data.type != userTypeFirestore) {
+
+        const documentUser = await verifyUserSession(context)
+        if (documentUser) {
+            data.validation = true
+            data.type = userTypeDocument
+        }
+    }
+
+    context.setUserType(data)
+    context.setIsUserSessionCheck(true)
+
+    return data
+
 }
 
-export { closeGeneralUserSession, generalLogIn }
+export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession }

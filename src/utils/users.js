@@ -1,5 +1,8 @@
+import { getDoc, updateDoc } from "firebase/firestore";
 import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext } from "./main";
 import { getUserRef } from "../firebase/utils/users";
+
+const userTypeDocument = "documentUser"
 
 
 const registerUser = async (formUser) => {
@@ -52,8 +55,10 @@ async function openUserSession(userRef, userSnapshot, context) {
 async function closeUserSession(context) {
 
     const userRef = getUserRef(context.user.email)
+    const userSnapshot = getDoc(userRef)
 
-    if (userRef) {
+
+    if ((await userSnapshot).exists()) {
         await updateDoc(userRef, { sessionNumber: null })
     }
 
@@ -108,23 +113,24 @@ async function verifyUserSession(context) {
 
     const localSessionNumber = getFromLocalStorage(sessionNumberKey)
     const localUserEmailID = getFromLocalStorage(userIdKey)
-
-
+    
+    
     if (localSessionNumber && localUserEmailID) {
-
+        
         const userRef = getUserRef(localUserEmailID)
         const userSnapshot = await getDoc(userRef)
-
+        
         if (localSessionNumber == userSnapshot.data().sessionNumber) {
-
-            await saveUserDataInContext(userSnapshot, context)
+            
+            await saveUserDataInContext(userSnapshot.data(), context)
             await setNewSessionNumber(userRef)
-
+            
             return true // returns true becouse the session was verify succsesfuly
         }
-
+        
     }
     await closeUserSession(context)
+    console.log("caca3")
     context.setIsUserSessionCheck(true)
 
     return false
@@ -133,4 +139,4 @@ async function verifyUserSession(context) {
 
 
 
-export { logInUser, registerUser, closeUserSession, verifyUserSession }
+export { logInUser, registerUser, closeUserSession, verifyUserSession, userTypeDocument }

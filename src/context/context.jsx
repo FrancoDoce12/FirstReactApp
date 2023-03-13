@@ -7,24 +7,29 @@ function AppContextProvider({ children }) {
 
     const [cart, setCart] = useState([])
 
-    const [isUserSessionCheck, setIsUserSessionCheck ] = useState(false)
+    const [isUserSessionCheck, setIsUserSessionCheck] = useState(false)
 
     const [user, setUser] = useState({})
 
     const [isInRegister, setIsInRegister] = useState(false)
 
+    const [userType, setUserType] = useState({ validation: false, type: undefined })
 
-    let value ={
+
+    console.log(userType, "userType")
+
+
+    let value = {
         cart,
         setCart,
-        user: user,
-        setUser : setUser,
+        user,
+        setUser,
         isUserSessionCheck,
         setIsUserSessionCheck,
         isInRegister,
-        setIsInRegister
-        
-        
+        setIsInRegister,
+        userType,
+        setUserType
     }
 
 
@@ -33,4 +38,4 @@ function AppContextProvider({ children }) {
     </AppContext.Provider>)
 }
 
-export {AppContextProvider, AppContext}
+export { AppContextProvider, AppContext }

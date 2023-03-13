@@ -10,7 +10,7 @@ import { closeGeneralUserSession } from '../../utils/general'
 function UserWidget() {
 
     const hide = useLocation().pathname == '/Register'
-    // hides the link if it is the path
+    // hides the link if it is this particular path
 
     let context = useContext(AppContext)
 
@@ -20,7 +20,7 @@ function UserWidget() {
     } else {
         userNameToShow = context.user.email
     }
-
+    console.log(context)
 
     if (context.isUserSessionCheck) {
         return (
