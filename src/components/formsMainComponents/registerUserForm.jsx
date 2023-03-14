@@ -1,5 +1,5 @@
 import Form from "./from";
-import { registerUser } from "../../utils/users"; 
+import { registerAndLogInUser } from "../../utils/users"; 
 
 function RegisterUserForm() {
     return (
@@ -32,7 +32,7 @@ function RegisterUserForm() {
                     },
                 ]
             } onSubmit={async (formUser, context, event) => {
-                return await registerUser(formUser, context)
+                return await registerAndLogInUser(formUser, context)
             }} />
     )
 }

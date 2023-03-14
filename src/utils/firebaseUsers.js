@@ -19,9 +19,11 @@ const firebaseUserRegister = async (formUser) => {
 
 const firebaseUserLogin = async (email, password, context) => {
     try {
-        const userCredential = await signInFirebaseUser(email, password)
-        saveUserDataInContext({ email, password }, context)
+        const userCredentials = await signInFirebaseUser(email, password)
+        const user = userCredentials.user
+        saveFirebaseUserDataInContext(user, context)
         // guardarlo en el contexto
+        console.log("queee")
         return true
     } catch (error) {
         console.error('Error en el inicio de sesión:', error)
@@ -36,36 +38,35 @@ const firebaseUserSingOut = async (context) => {
 }
 
 const firebaseTest = async () => {
-    const caca = getCurrentFirebaseUser()
-    console.log(caca)
-    console.log(caca.emailVerified)
+    const example = getCurrentFirebaseUser()
+    console.log(example)
+    console.log(example.emailVerified)
 }
 
 const saveFirebaseUserDataInContext = (firebaseUser, context) => {
-
+    // normalisation
     const user = {
         email: firebaseUser.email,
         emailVerified: firebaseUser.emailVerified,
-        displayName: firebaseUser.displayName
+        name: firebaseUser.displayName
     }
-    context.setUser(user)
-    console.log("se guardo el user?")
+    saveUserDataInContext(user,context)
 }
 
-const checkFirebaseUser = async (context) =>{
+const checkFirebaseUser = async (context) => {
     const userTypeObj = {
         validation: false,
         type: undefined
-    } 
-    // problema es que esta parte se ejecuta despues de lo esperado :c por eos la confucnion del cotnext y cosas asi
-    await auth.onAuthStateChanged((firebaseUser)=>{
-        
-        if (firebaseUser){
-            console.log("saveFirebaseUserDataInContext")
-            saveFirebaseUserDataInContext(firebaseUser,context)
+    }
+    auth.onAuthStateChanged((firebaseUser) => {
+
+        if (firebaseUser) {
+            saveFirebaseUserDataInContext(firebaseUser, context)
             userTypeObj.type = userTypeFirestore
             userTypeObj.validation = firebaseUser.emailVerified
-        } 
+            context.setUserType(userTypeObj)
+            console.log("onAuthStateChanged AAAAAAAAAAAAAAAAAAAAAAAAAA")
+        }
     })
     return userTypeObj
 }

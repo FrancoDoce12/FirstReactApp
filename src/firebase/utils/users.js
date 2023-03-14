@@ -24,6 +24,7 @@ const getUserRef = (userEmailId) => {
 }
 
 async function saveUser(formUser) {
+    console.log(formUser)
     const userData = {
         password: formUser.password1,
         name: formUser.name,

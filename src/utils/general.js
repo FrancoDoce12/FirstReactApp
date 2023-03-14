@@ -24,7 +24,7 @@ const closeGeneralUserSession = async (context) => {
 
 const generalLogIn = async (userEmail, userPassword, context) => {
     await closeGeneralUserSession(context)
-    if (userExists(userEmail)) {
+    if (await userExists(userEmail)) {
         return await logInUser(userEmail, userPassword, context)
     } else {
         return await firebaseUserLogin(userEmail, userPassword, context)
@@ -47,17 +47,13 @@ const checkGeneralUserSession = async (context) => {
         const firebaseUser = await checkFirebaseUser(context)
         data.validation = firebaseUser.validation
         data.type = firebaseUser.type
-        console.log(firebaseUser, "firebaseUser")
     }
 
-    console.log(documentUser, "documentUser")
     
-
-    
-    console.log(data.type, "data.type del firebase user")
 
     context.setUserType(data)
     context.setIsUserSessionCheck(true)
+    console.log("context.setIsUserSessionCheck(true)")
 
     return data
 }

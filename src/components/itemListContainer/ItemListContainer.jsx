@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 function ItemListContainer() {
 
     const [data, setData] = useState([])
-    const [params, setParams] = useState(useParams())
+    const params = useParams()
 
     useEffect(() => {
         async function getData() {
@@ -19,15 +19,12 @@ function ItemListContainer() {
             else {
                 dataFromDB = getProducts()
             }
-
-
-
             setData(await dataFromDB)
         }
 
         getData()
 
-    }, [])
+    }, [params])
 
     if (data.length > 0) {
         return (

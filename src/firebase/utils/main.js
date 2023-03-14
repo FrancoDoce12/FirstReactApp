@@ -11,8 +11,9 @@ const getDocById = async (collectionRute, docId) => {
 }
 
 const saveDocCustomId = async (collection, customId, documentData = {}) => {
-    let document = doc(collection, customId)
-    await setDoc(document, documentData)
+    console.log("antes del desastre")
+    let docuRef = doc(collection, customId)
+    await setDoc(docuRef, documentData)
 }
 
 const getCollectionRef = (colllectionRoute) => {

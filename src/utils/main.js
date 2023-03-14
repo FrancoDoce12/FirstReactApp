@@ -57,7 +57,7 @@ function validateRegisterPasswords(password1, password2) {
 }
 
 const validateDbPassword = (userSnapshot, userPassword) => {
-    if (userSnapshot.exist()) {
+    if (userSnapshot.exists()) {
         const userDbPassword = userSnapshot.data().password
         return validateTwoPasswords(userDbPassword, userPassword)
     }
@@ -103,7 +103,12 @@ const getCurrentUserType = async (context) => {
 
 
 async function saveUserDataInContext(userData, context) {
-    await context.setUser({ email: userData.email, name: userData.name })
+    await context.setUser({
+        email: userData.email,
+        name: userData.name,
+        emailVerified: userData.emailVerified
+
+    })
 }
 
 async function deleteUserDataInContext(context) {

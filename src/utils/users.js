@@ -1,6 +1,6 @@
 import { getDoc, updateDoc } from "firebase/firestore";
-import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext } from "./main";
-import { getUserRef } from "../firebase/utils/users";
+import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation } from "./main";
+import { getUserRef, saveUser } from "../firebase/utils/users";
 
 const userTypeDocument = "documentUser"
 
@@ -140,4 +140,4 @@ async function verifyUserSession(context) {
 
 
 
-export { logInUser, registerUser, closeUserSession, verifyUserSession, userTypeDocument }
+export { logInUser, registerUser, closeUserSession, verifyUserSession, userTypeDocument, registerAndLogInUser }
