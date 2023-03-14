@@ -64,7 +64,8 @@ async function closeUserSession(context) {
 
     setIntoLocalStorage(sessionNumberKey, false)
     setIntoLocalStorage(userIdKey, false)
-
+    console.log("se elimina la data user del context")
+    console.log("dentro de closeUserSession")
     await deleteUserDataInContext(context)
 
 }
@@ -130,7 +131,7 @@ async function verifyUserSession(context) {
         
     }
     await closeUserSession(context)
-    console.log("caca3")
+    console.log("verifyUserSession termina")
     context.setIsUserSessionCheck(true)
 
     return false

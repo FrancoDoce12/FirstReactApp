@@ -37,7 +37,7 @@ function App() {
           <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
-          <Route path='/LogInoptions' element={<LogInForm />} ></Route>
+          <Route path='/LogIn' element={<LogInForm />} ></Route>
           <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route>
           <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route>
           <Route path='/RegisterOptions' element={<RegisterOptions />} ></Route>

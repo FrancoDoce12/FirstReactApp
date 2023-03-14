@@ -49,18 +49,22 @@ const saveFirebaseUserDataInContext = (firebaseUser, context) => {
         displayName: firebaseUser.displayName
     }
     context.setUser(user)
+    console.log("se guardo el user?")
 }
 
-const checkFirebaseUser = (context) =>{
+const checkFirebaseUser = async (context) =>{
     const userTypeObj = {
         validation: false,
         type: undefined
     } 
-    auth.onAuthStateChanged((firebaseUser)=>{
+    // problema es que esta parte se ejecuta despues de lo esperado :c por eos la confucnion del cotnext y cosas asi
+    await auth.onAuthStateChanged((firebaseUser)=>{
+        
         if (firebaseUser){
+            console.log("saveFirebaseUserDataInContext")
+            saveFirebaseUserDataInContext(firebaseUser,context)
             userTypeObj.type = userTypeFirestore
             userTypeObj.validation = firebaseUser.emailVerified
-            saveFirebaseUserDataInContext(firebaseUser,context)
         } 
     })
     return userTypeObj

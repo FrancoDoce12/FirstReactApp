@@ -3,16 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {initFirestoreApp} from './firebase/config'
-import {AppContextProvider} from './context/context';
+import { initFirestoreApp } from './firebase/config'
+import { AppContextProvider } from './context/context';
+
+
+// Sentry.init({
+//   dsn: "https://<key>@sentry.io/<project>"
+// });
 
 initFirestoreApp()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
-  <AppContextProvider>
-    <App />
+    <AppContextProvider>
+      <App />
     </AppContextProvider>
   </>
 );

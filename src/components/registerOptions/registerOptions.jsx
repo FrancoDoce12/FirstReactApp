@@ -10,7 +10,7 @@ const RegisterOptions = () => {
         }, {
 
             link: "/RegisterOption1",
-            linkText: "Register uning the users system made by my",
+            linkText: "Register uning the users system made by my own",
             description: "this system is sligly diferent then a normal one because it uses somthig calle session numbers and are stores in the local storage and then compared with the one that is in the db, if it is not the same your session will close and you will have to enter again generating a new session mumber, all of this need some hashes to make it more secure"
         }]}>
 

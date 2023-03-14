@@ -16,7 +16,7 @@ function AppContextProvider({ children }) {
     const [userType, setUserType] = useState({ validation: false, type: undefined })
 
 
-    console.log(userType, "userType")
+    console.log(userType, "userType dentro del context")
 
 
     let value = {
@@ -32,6 +32,7 @@ function AppContextProvider({ children }) {
         setUserType
     }
 
+    console.log(value, "valores del contexto dentro del context")
 
     return (<AppContext.Provider value={value} >
         {children}
