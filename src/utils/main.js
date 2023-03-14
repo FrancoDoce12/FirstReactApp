@@ -107,8 +107,15 @@ async function saveUserDataInContext(userData, context) {
         email: userData.email,
         name: userData.name,
         emailVerified: userData.emailVerified
-
     })
+}
+
+const saveUserTypeDataInContext = async (userTypeObj,context) => {
+    await context.setUserType(userTypeObj)
+}
+
+const deleteUserTypeDataInContext = async (context) => {
+    await context.setUserType({})
 }
 
 async function deleteUserDataInContext(context) {
@@ -119,5 +126,5 @@ async function deleteUserDataInContext(context) {
 
 
 
-export { setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, getCurrentUserType }
+export { setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, getCurrentUserType, saveUserTypeDataInContext, deleteUserTypeDataInContext }
 

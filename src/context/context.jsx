@@ -16,8 +16,6 @@ function AppContextProvider({ children }) {
     const [userType, setUserType] = useState({ validation: false, type: undefined })
 
 
-    console.log(user, "este es el user")
-
 
     let value = {
         cart,

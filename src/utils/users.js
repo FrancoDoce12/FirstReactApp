@@ -1,5 +1,5 @@
 import { getDoc, updateDoc } from "firebase/firestore";
-import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation } from "./main";
+import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation, saveUserTypeDataInContext, deleteUserTypeDataInContext } from "./main";
 import { getUserRef, saveUser } from "../firebase/utils/users";
 
 const userTypeDocument = "documentUser"
@@ -32,7 +32,7 @@ async function registerAndLogInUser(formUser, context) {
         return false
     }
 
-    if (!await logInUser(formUser.email, formUser.password, context)) {
+    if (!await logInUser(formUser.email, formUser.password1, context)) {
         return false
     }
     return true
@@ -50,6 +50,7 @@ async function openUserSession(userRef, userSnapshot, context) {
     setIntoLocalStorage(userIdKey, userSnapshot.id)
 
     await saveUserDataInContext(userSnapshot.data(), context)
+    await saveUserTypeDataInContext({type: userTypeDocument, validation: true}, context)
 }
 
 async function closeUserSession(context) {
@@ -67,7 +68,7 @@ async function closeUserSession(context) {
     console.log("se elimina la data user del context")
     console.log("dentro de closeUserSession")
     await deleteUserDataInContext(context)
-
+    await deleteUserTypeDataInContext(context)
 }
 
 
@@ -131,7 +132,6 @@ async function verifyUserSession(context) {
         
     }
     await closeUserSession(context)
-    console.log("verifyUserSession termina")
     context.setIsUserSessionCheck(true)
 
     return false
