@@ -1,40 +1,47 @@
 import { auth } from "../firebase/config"
-import { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
-import { deleteUserDataInContext, saveUserDataInContext, userValidation } from "./main"
+import { getCurrentFirebaseUser, getFirebaseDocUserByUid, getFirestoreUsersCollectionRef, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
+import { saveDocCustomId } from "../firebase/utils/main"
+import { deleteAllUserDataInContext, deleteUserDataInContext, saveUserDataInContext, saveUserTypeDataInContext, userValidation } from "./main"
 
 const userTypeFirestore = "firestoreUser"
 
 
-const firebaseUserRegister = async (formUser) => {
-    if (!userValidation(formUser)) {
+const firebaseUserRegister = async (formUser, context) => {
+    if (! await userValidation(formUser)) {
+        console.error("Form User Not Validated")
         return false
     }
 
     const credentials = await saveAndRegisterFirebaseUser(formUser.email, formUser.password1)
     const newUser = credentials.user
+
+    await saveFirebaseUserDoc(formUser, newUser.uid)
+    await saveFirebaseUserDataInContext(newUser, context)
     await sendEmailVerificationFirabeseUser(newUser)
 
     return true
 }
 
+const saveFirebaseUserDoc = async (formUser, firebaseUserUid) => {
+    const userData = { name: formUser.name, email: formUser.email, password: formUser.password1 }
+    await saveDocCustomId(getFirestoreUsersCollectionRef(), firebaseUserUid, userData)
+}
+
 const firebaseUserLogin = async (email, password, context) => {
     try {
         const userCredentials = await signInFirebaseUser(email, password)
-        const user = userCredentials.user
-        saveFirebaseUserDataInContext(user, context)
-        // guardarlo en el contexto
-        console.log("queee")
+        const firebaseUser = userCredentials.user
+        await saveFirebaseUserDataInContext(firebaseUser, context)
         return true
     } catch (error) {
         console.error('Error en el inicio de sesión:', error)
-        // notificar el error
         return false
     }
 }
 
 const firebaseUserSingOut = async (context) => {
     await singOutFirebaseUser()
-    await deleteUserDataInContext(context)
+    await deleteAllUserDataInContext(context)
 }
 
 const firebaseTest = async () => {
@@ -43,14 +50,21 @@ const firebaseTest = async () => {
     console.log(example.emailVerified)
 }
 
-const saveFirebaseUserDataInContext = (firebaseUser, context) => {
-    // normalisation
+const saveFirebaseUserDataInContext = async (firebaseUser, context) => {
+    const userData = await getFirebaseDocUserByUid(firebaseUser.uid)
+    // don t want the password saved into the context
+    delete userData.password
+    console.log(userData)
     const user = {
-        email: firebaseUser.email,
         emailVerified: firebaseUser.emailVerified,
-        name: firebaseUser.displayName
+        ...userData
     }
-    saveUserDataInContext(user,context)
+    const userType = {
+        type: userTypeFirestore,
+        verification: firebaseUser.emailVerified
+    }
+    saveUserDataInContext(user, context)
+    saveUserTypeDataInContext(userType, context)
 }
 
 const checkFirebaseUser = async (context) => {
@@ -59,13 +73,13 @@ const checkFirebaseUser = async (context) => {
         type: undefined
     }
     auth.onAuthStateChanged((firebaseUser) => {
+        console.log(firebaseUser,"onAuthStateChanged")
 
         if (firebaseUser) {
             saveFirebaseUserDataInContext(firebaseUser, context)
             userTypeObj.type = userTypeFirestore
             userTypeObj.validation = firebaseUser.emailVerified
             context.setUserType(userTypeObj)
-            console.log("onAuthStateChanged AAAAAAAAAAAAAAAAAAAAAAAAAA")
         }
     })
     return userTypeObj

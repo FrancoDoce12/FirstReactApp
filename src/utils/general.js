@@ -44,9 +44,9 @@ const checkGeneralUserSession = async (context) => {
         data.validation = true
         data.type = userTypeDocument
     } else {
-        const firebaseUser = await checkFirebaseUser(context)
-        data.validation = firebaseUser.validation
-        data.type = firebaseUser.type
+        const firebaseUserType = await checkFirebaseUser(context)
+        data.validation = firebaseUserType.validation
+        data.type = firebaseUserType.type
     }
 
     

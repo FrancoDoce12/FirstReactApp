@@ -1,5 +1,5 @@
 import { getDoc, updateDoc } from "firebase/firestore";
-import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation, saveUserTypeDataInContext, deleteUserTypeDataInContext } from "./main";
+import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation, saveUserTypeDataInContext, deleteUserTypeDataInContext, deleteAllUserDataInContext } from "./main";
 import { getUserRef, saveUser } from "../firebase/utils/users";
 
 const userTypeDocument = "documentUser"
@@ -67,8 +67,7 @@ async function closeUserSession(context) {
     setIntoLocalStorage(userIdKey, false)
     console.log("se elimina la data user del context")
     console.log("dentro de closeUserSession")
-    await deleteUserDataInContext(context)
-    await deleteUserTypeDataInContext(context)
+    await deleteAllUserDataInContext(context)
 }
 
 

@@ -31,7 +31,7 @@ function RegisterFirestoreUserForm() {
                 },
             ]
             } onSubmit={async (formUser, context, event) => {
-                return await firebaseUserRegister(formUser)
+                return await firebaseUserRegister(formUser, context)
             }} />
     )
 }

@@ -12,7 +12,7 @@ const getFirestoreUsersCollectionRef = () => {
     return getCollectionRef(firestoreUsersRoute)
 }
 
-const getFirebaseUserById = async (id) => {
+const getFirebaseUserByUid = async (id) => {
     // need api rest for things like that
     // return await getDocById(firestoreUsersRoute, id)
 }
@@ -45,9 +45,9 @@ const singOutFirebaseUser = async () => {
     return await signOut(auth)
 }
 
-const getFirebaseUserByEmail = async () => {
-    // need api rest for more things in the back end
+const getFirebaseDocUserByUid = async (Uid) => {
+    return await getDocById(getFirestoreUsersCollectionRef(),Uid)
 }
 
 
-export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser }
+export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser, getFirestoreUsersCollectionRef, getFirebaseDocUserByUid }
