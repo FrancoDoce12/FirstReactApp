@@ -1,36 +1,76 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/context";
+import { isIterable } from "../../utils/main";
 import FormNotificationContainer from "../formNotificationContainer/formNotificationContainer";
-import RegisterInput from "../registerImput/RegisterInput";
+import FormInput from "./fromImInput/formInput";
 import SubmitButton from "../submitButton/submitButton";
 
 
 
-function Form({ inputs, onSubmit = () => { } }) {
-
-
+function Form({ children, inputs, onSubmit = () => { } }) {
 
     const imputsToLoad = []
-    const imputsValues = {}
+    const [inputsValues, setImputsValues] = useState({})
+    const [valuesRef] = useState({inputsValues ,setImputsValues})
 
-    // imputsToLoad culd be a useState and de next part dawn the code culd be in a useEffect without dependendy
-    // just for more performance
+    useEffect(()=>{
+        valuesRef.inputsValues = inputsValues
+    },[inputsValues])
 
-let inputId = 0
+    // mananging the inputs and their event onChange
+    let inputId = 0
     inputs.forEach(input => {
+        let onChange
+        if (input.type == "checkbox") {
+            onChange = (event) => {
+                let newInputValues = { ...valuesRef.inputsValues }
+                let dataObj = newInputValues[input.name]
+                if (event.target.checked) {
+                    if (dataObj) {
+                        //adds the value to the obj
+                        dataObj[inputId] = input.value
+                    } else {
+                        // creates the obj and adds the value
+                        dataObj = {}
+                        dataObj[inputId] = input.value
+                    }
+                } else {
+                    // delete the element unChecked of the obj
+                    delete dataObj[inputId]
+                }
+                newInputValues[input.name] = dataObj
+                setImputsValues(newInputValues)
+            }
+        } else {
+            onChange = (event) => {
+                let newInputValues = { ...valuesRef.inputsValues }
+                newInputValues[input.name] = event.target.value
+                setImputsValues(newInputValues)
+            }
+        }
+
+
         imputsToLoad.push(
-            <RegisterInput
-                labelText={input.labelText} key={inputId} type={input.type} name={input.name} placeholder={input.placeholder}
-                onChange={event => {
-                    // tengo que hacer que esta funcion guarde aca adentro los valores de cada una de los inputs
-                    imputsValues[input.name] = event.target.value
-                }}
-            >
-            </RegisterInput>
+            <FormInput
+                labelText={input.labelText} key={inputId} value={input.value} type={input.type} name={input.name} placeholder={input.placeholder} element={input.element}
+                onChange={onChange}
+            />
         )
         inputId++
     });
 
+
+    // adding the ref to the childrens so they can load values to the form
+    let childrenWithRef
+    if (isIterable(children)) {
+        childrenWithRef = []
+        children.forEach(children, (child) => {
+            childrenWithRef.push(child(inputsValues, setImputsValues))
+        })
+    }
+    else {
+        childrenWithRef = children(inputsValues, setImputsValues)
+    }
 
 
 
@@ -57,18 +97,19 @@ let inputId = 0
 
     return (
         <form onSubmit={async (event) => {
-            
+
             event.preventDefault()
             setFormState("loading")
-            let submitResult = await onSubmit(imputsValues, localContext, event)
+            let submitResult = await onSubmit(inputsValues, localContext, event)
             if (submitResult) {
                 setFormState("succsesful")
             } else {
                 setFormState("error")
             }
-            
+
         }}>
             {imputsToLoad}
+            {childrenWithRef}
             <SubmitButton isShow={formState != "succsesful"} />
             <FormNotificationContainer notificationMessages={notificationMessages} />
         </form>

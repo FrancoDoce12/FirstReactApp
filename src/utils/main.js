@@ -1,6 +1,7 @@
 import { getDoc, updateDoc } from 'firebase/firestore';
 import { getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
-import { getUserById, userExists } from '../firebase/utils/users';
+import { getUserById, getUserRef, userExists } from '../firebase/utils/users';
+import { userTypeDocument } from './users';
 
 const sessionNumberKey = "sessionNumber"
 const userIdKey = "userId"
@@ -103,14 +104,13 @@ const getCurrentUserType = async (context) => {
 
 
 async function saveUserDataInContext(userData, context) {
-    await context.setUser({
-        email: userData.email,
-        name: userData.name,
-        emailVerified: userData.emailVerified
-    })
+    const user = {...userData}
+    delete user.password
+    await context.setUser(user)
 }
 
 const saveUserTypeDataInContext = async (userTypeObj, context) => {
+    console.log(userTypeObj, "userTypeObj")
     await context.setUserType(userTypeObj)
 }
 
@@ -131,5 +131,5 @@ const deleteAllUserDataInContext = async (context) =>{
 
 
 
-export { setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, getCurrentUserType, saveUserTypeDataInContext, deleteUserTypeDataInContext, deleteAllUserDataInContext }
+export { setIntoLocalStorage, getFromLocalStorage, getNewSessionNumber, validateRegisterPasswords, validateDbPassword, userValidation, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, getCurrentUserType, saveUserTypeDataInContext, deleteUserTypeDataInContext, deleteAllUserDataInContext, isIterable }
 

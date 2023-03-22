@@ -1,4 +1,4 @@
-import { getDocs, query, where } from "firebase/firestore"
+import { addDoc, getDocs, query, where } from "firebase/firestore"
 import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 
 const prodcutsRoute = "Productos"
@@ -24,5 +24,9 @@ async function getProductsByCategories(categories) {
     })
 }
 
+const addProduct = async (product) => {
+    await addDoc(getProductsCollectionRef(), product)
+}
 
-export { getProductsByCategories, getProducts, getProductById }
+
+export { getProductsByCategories, getProducts, getProductById, addProduct }

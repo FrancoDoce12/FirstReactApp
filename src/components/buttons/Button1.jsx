@@ -8,12 +8,12 @@ function Button1({children, onClick, hide}){
     }
     if (onClick){
         return (
-            <button className='Button1' onClick={onClick}>{children}</button>
+            <button type='button'  className='Button1' onClick={onClick}>{children}</button>
         )
     }
     
     return (
-        <button className='Button1'>{children}</button>
+        <button type='button' className='Button1'>{children}</button>
     )
 }
 

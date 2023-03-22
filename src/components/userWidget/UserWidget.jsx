@@ -22,12 +22,13 @@ function UserWidget() {
     }
 
     let component
-
+    console.log(context.userType, "se fija a validacion")
     if (context.userType.validation) {
         component = (
             <>
                 <h5>{`Welcom User ${userNameToShow}`}</h5>
                 <LogOutButton context={context} />
+                <Link1 to ={'/CreateNewProduct'}>Create Your Own Product</Link1>
             </>
         )
     } else if (context.userType.type == userTypeFirestore) {

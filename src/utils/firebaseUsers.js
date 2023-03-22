@@ -56,12 +56,14 @@ const saveFirebaseUserDataInContext = async (firebaseUser, context) => {
     delete userData.password
     console.log(userData)
     const user = {
+        uid: firebaseUser.uid,
         emailVerified: firebaseUser.emailVerified,
+        email: firebaseUser.email,
         ...userData
     }
     const userType = {
         type: userTypeFirestore,
-        verification: firebaseUser.emailVerified
+        validation: firebaseUser.emailVerified
     }
     saveUserDataInContext(user, context)
     saveUserTypeDataInContext(userType, context)

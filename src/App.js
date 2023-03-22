@@ -12,6 +12,7 @@ import RegisterFirestoreUserForm from './components/formsMainComponents/register
 import { firebaseTest, saveFirebaseUserDataInContext } from './utils/firebaseUsers';
 import { auth } from './firebase/config';
 import { checkGeneralUserSession } from './utils/general';
+import CreateProductForm from './components/formsMainComponents/createProductForm2';
 
 
 
@@ -41,7 +42,7 @@ function App() {
           <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route>
           <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route>
           <Route path='/RegisterOptions' element={<RegisterOptions />} ></Route>
-
+          <Route path='/CreateNewProduct' element={<CreateProductForm />} ></Route>
         </Routes>
       </div>
     </BrowserRouter>

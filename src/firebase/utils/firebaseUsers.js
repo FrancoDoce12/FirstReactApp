@@ -1,6 +1,7 @@
 import { db, auth } from "../config";
 import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { doc } from "firebase/firestore";
 
 
 const firestoreUsersRoute = "users"
@@ -49,5 +50,9 @@ const getFirebaseDocUserByUid = async (Uid) => {
     return await getDocById(getFirestoreUsersCollectionRef(),Uid)
 }
 
+const getFirebaseUserRefById = (Uid) => {
+    getDocRefById(getFirestoreUsersCollectionRef(),Uid)
+}
 
-export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser, getFirestoreUsersCollectionRef, getFirebaseDocUserByUid }
+
+export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser, getFirestoreUsersCollectionRef, getFirebaseDocUserByUid, getFirebaseUserRefById }

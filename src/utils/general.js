@@ -1,8 +1,8 @@
 import { auth } from "../firebase/config";
-import { getCurrentFirebaseUser } from "../firebase/utils/firebaseUsers";
-import { userExists } from "../firebase/utils/users";
+import { getCurrentFirebaseUser, getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
+import { getUserRef, userExists } from "../firebase/utils/users";
 import { checkFirebaseUser, firebaseUserLogin, firebaseUserSingOut, saveFirebaseUserDataInContext, userTypeFirestore } from "./firebaseUsers";
-import { getCurrentUserType } from "./main"
+import { getCurrentUserType, saveUserTypeDataInContext } from "./main"
 import { closeUserSession, logInUser, verifyUserSession, userTypeDocument } from "./users";
 
 
@@ -49,13 +49,22 @@ const checkGeneralUserSession = async (context) => {
         data.type = firebaseUserType.type
     }
 
-    
-
-    context.setUserType(data)
-    context.setIsUserSessionCheck(true)
+    await saveUserTypeDataInContext(data, context)
+    await context.setIsUserSessionCheck(true)
     console.log("context.setIsUserSessionCheck(true)")
 
     return data
 }
 
-export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession }
+const getGeneralCurrentUserRef = (context) => {
+    if (!context.userType.type) {
+        return false
+    }
+    if (context.userType.type == userTypeDocument) {
+        return getUserRef(context.user.email)
+    } else {
+        return getFirebaseUserRefById(context.user.uid)
+    }
+}
+
+export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef }
