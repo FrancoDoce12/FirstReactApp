@@ -46,15 +46,12 @@ const firebaseUserSingOut = async (context) => {
 
 const firebaseTest = async () => {
     const example = getCurrentFirebaseUser()
-    console.log(example)
-    console.log(example.emailVerified)
 }
 
 const saveFirebaseUserDataInContext = async (firebaseUser, context) => {
     const userData = await getFirebaseDocUserByUid(firebaseUser.uid)
     // don t want the password saved into the context
     delete userData.password
-    console.log(userData)
     const user = {
         uid: firebaseUser.uid,
         emailVerified: firebaseUser.emailVerified,
@@ -75,7 +72,6 @@ const checkFirebaseUser = async (context) => {
         type: undefined
     }
     auth.onAuthStateChanged((firebaseUser) => {
-        console.log(firebaseUser,"onAuthStateChanged")
 
         if (firebaseUser) {
             saveFirebaseUserDataInContext(firebaseUser, context)

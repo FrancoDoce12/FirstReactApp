@@ -49,7 +49,6 @@ function Form({ children, inputs, onSubmit = () => { } }) {
             }
         }
 
-
         imputsToLoad.push(
             <FormInput
                 labelText={input.labelText} key={inputId} value={input.value} type={input.type} name={input.name} placeholder={input.placeholder} element={input.element}

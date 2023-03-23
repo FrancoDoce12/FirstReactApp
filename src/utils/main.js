@@ -110,7 +110,6 @@ async function saveUserDataInContext(userData, context) {
 }
 
 const saveUserTypeDataInContext = async (userTypeObj, context) => {
-    console.log(userTypeObj, "userTypeObj")
     await context.setUserType(userTypeObj)
 }
 

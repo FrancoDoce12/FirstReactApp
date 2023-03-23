@@ -12,10 +12,6 @@ const MultiCategoriesInput = ({ name,  formData,  setFormData }) => {
     const [categories, setCategories] = useState({})
     const [refObj] = useState({ categories, setCategories,  formData,  setFormData })
 
-    console.log("re Render")
-    console.log(categories, "categories of the reRender")
-
-
     useEffect(() => {
         // makes a unpdate of the reference of categories, when it changes
         // becouse if not, this will acces to the old categories and makes no changes

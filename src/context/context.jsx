@@ -30,8 +30,6 @@ function AppContextProvider({ children }) {
         setUserType
     }
 
-    console.log(value, "valores del contexto dentro del context")
-
     return (<AppContext.Provider value={value} >
         {children}
     </AppContext.Provider>)

@@ -51,7 +51,6 @@ const checkGeneralUserSession = async (context) => {
 
     await saveUserTypeDataInContext(data, context)
     await context.setIsUserSessionCheck(true)
-    console.log("context.setIsUserSessionCheck(true)")
 
     return data
 }

@@ -22,7 +22,6 @@ function UserWidget() {
     }
 
     let component
-    console.log(context.userType, "se fija a validacion")
     if (context.userType.validation) {
         component = (
             <>
