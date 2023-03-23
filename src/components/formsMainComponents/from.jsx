@@ -20,23 +20,25 @@ function Form({ children, inputs, onSubmit = () => { } }) {
     // mananging the inputs and their event onChange
     let inputId = 0
     inputs.forEach(input => {
+        const id = inputId
         let onChange
         if (input.type == "checkbox") {
             onChange = (event) => {
+                console.log(`This input value is:${input.value} and its id is${id}`)
                 let newInputValues = { ...valuesRef.inputsValues }
                 let dataObj = newInputValues[input.name]
                 if (event.target.checked) {
                     if (dataObj) {
                         //adds the value to the obj
-                        dataObj[inputId] = input.value
+                        dataObj[id] = input.value
                     } else {
                         // creates the obj and adds the value
                         dataObj = {}
-                        dataObj[inputId] = input.value
+                        dataObj[id] = input.value
                     }
                 } else {
                     // delete the element unChecked of the obj
-                    delete dataObj[inputId]
+                    delete dataObj[id]
                 }
                 newInputValues[input.name] = dataObj
                 setImputsValues(newInputValues)
