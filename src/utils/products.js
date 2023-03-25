@@ -4,7 +4,16 @@ import { getGeneralCurrentUserRef } from "./general";
 import { userTypeDocument } from "./users";
 
 const validateProduct = (product) => {
-    if (product) return true
+    if (!(product.title && product.img_source && product.description && product.alt)) {
+        return false
+    }
+    Object.values(product).forEach(value => {
+        if (value === ""){
+        console.error(value,"is invalid in product validation")
+        return false
+    }
+    })
+    return true
 }
 
 const createProduct = async (product, context) => {
@@ -12,15 +21,24 @@ const createProduct = async (product, context) => {
         return false
     }
     if (!validateProduct(product)) {
+        console.log("no se valido la verga")
         return false
     }
+
+    const categories = Object.values(product.categories)
+    delete product.categories
+
     const userRef = getGeneralCurrentUserRef(context)
+    const creationDate = new Date()
     const productData = {
         ...product,
-        userRef
+        categories,
+        userRef,
+        creationDate
     }
     await addProduct(productData)
-
+    console.log(productData)
+    return true
 }
 
 export { createProduct }

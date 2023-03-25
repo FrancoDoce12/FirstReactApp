@@ -12,7 +12,7 @@ import RegisterFirestoreUserForm from './components/formsMainComponents/register
 import { firebaseTest, saveFirebaseUserDataInContext } from './utils/firebaseUsers';
 import { auth } from './firebase/config';
 import { checkGeneralUserSession } from './utils/general';
-import CreateProductForm from './components/formsMainComponents/createProductForm2';
+import CreateProductForm from './components/formsMainComponents/createProductForm';
 
 
 

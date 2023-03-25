@@ -55,7 +55,7 @@ const CreateProductForm = () => {
     return <Form inputs={inputs} onSubmit={
         async (product, context, event) => {
             console.log(product, "the produuct!!!!")
-            //await createProduct(product, context)
+            return await createProduct(product,context)
         }
     } >
         {multiCategoriesInput}

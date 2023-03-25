@@ -51,7 +51,7 @@ const getFirebaseDocUserByUid = async (Uid) => {
 }
 
 const getFirebaseUserRefById = (Uid) => {
-    getDocRefById(getFirestoreUsersCollectionRef(),Uid)
+    return getDocRefById(getFirestoreUsersCollectionRef(),Uid)
 }
 
 

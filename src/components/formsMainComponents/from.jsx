@@ -24,7 +24,6 @@ function Form({ children, inputs, onSubmit = () => { } }) {
         let onChange
         if (input.type == "checkbox") {
             onChange = (event) => {
-                console.log(`This input value is:${input.value} and its id is${id}`)
                 let newInputValues = { ...valuesRef.inputsValues }
                 let dataObj = newInputValues[input.name]
                 if (event.target.checked) {
