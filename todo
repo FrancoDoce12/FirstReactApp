@@ -1,8 +1,4 @@
-depues hacer una relacion de usuarios con productos y que puedan comprar alguno y poseerlo, lo cual en los detalles aparecera el 
-usuario que los pose, seguramente solo se pueda hacer con los usuarios de tipo documento, 
-
-y si tenes ganas, hacer un form para que puedan crear productos los ususarios, y que puedan de elegir de poseerlos o no
 
 hacer que no te podas registrar si ya esta tumail guardado
 
-arreglar el bug de que los checkboxs no se guardan donde deverian guardarse
+hacer que los productos se puedan comprar, y si tienen dueño que le den puntos al dueño, y que la coleccion de productos comprados se enceñe en el carrito

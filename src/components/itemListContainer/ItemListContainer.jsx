@@ -32,7 +32,7 @@ function ItemListContainer() {
 
                 {data.map(item => {
                     return (
-                        <ItemComponent key={item.id} id={item.id} img_source={item.img_source} alt={item.alt} title={item.title} description={item.description} ></ItemComponent>
+                        <ItemComponent key={item.id} id={item.id} img_source={item.img_source} alt={item.alt} title={item.title} ></ItemComponent>
                     )
                 })}
             </div>

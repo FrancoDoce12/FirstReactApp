@@ -4,8 +4,6 @@ import { useState } from "react"
 
 const DeployableText = ({ children }) => {
 
-    console.log(children)
-
     const [deployItem, setDeployItem] = useState(false)
 
     let headerText

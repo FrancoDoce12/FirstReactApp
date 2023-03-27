@@ -47,11 +47,11 @@ const singOutFirebaseUser = async () => {
 }
 
 const getFirebaseDocUserByUid = async (Uid) => {
-    return await getDocById(getFirestoreUsersCollectionRef(),Uid)
+    return await getDocById(firestoreUsersRoute, Uid)
 }
 
 const getFirebaseUserRefById = (Uid) => {
-    return getDocRefById(getFirestoreUsersCollectionRef(),Uid)
+    return getDocRefById(firestoreUsersRoute, Uid)
 }
 
 

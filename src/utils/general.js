@@ -1,6 +1,6 @@
 import { auth } from "../firebase/config";
 import { getCurrentFirebaseUser, getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
-import { getUserRef, userExists } from "../firebase/utils/users";
+import { getUserById, getUserRef, userExists } from "../firebase/utils/users";
 import { checkFirebaseUser, firebaseUserLogin, firebaseUserSingOut, saveFirebaseUserDataInContext, userTypeFirestore } from "./firebaseUsers";
 import { getCurrentUserType, saveUserTypeDataInContext } from "./main"
 import { closeUserSession, logInUser, verifyUserSession, userTypeDocument } from "./users";

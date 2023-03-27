@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react'
+import { test } from '../utils/products'
 
 let AppContext = createContext({})
 
@@ -29,6 +30,8 @@ function AppContextProvider({ children }) {
         userType,
         setUserType
     }
+
+    // test(value)
 
     return (<AppContext.Provider value={value} >
         {children}

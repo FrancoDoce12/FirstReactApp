@@ -54,7 +54,7 @@ const CreateProductForm = () => {
 
     return <Form inputs={inputs} onSubmit={
         async (product, context, event) => {
-            console.log(product, "the produuct!!!!")
+
             return await createProduct(product,context)
         }
     } >

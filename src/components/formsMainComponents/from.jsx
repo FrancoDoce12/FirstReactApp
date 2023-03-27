@@ -11,11 +11,11 @@ function Form({ children, inputs, onSubmit = () => { } }) {
 
     const imputsToLoad = []
     const [inputsValues, setImputsValues] = useState({})
-    const [valuesRef] = useState({inputsValues ,setImputsValues})
+    const [valuesRef] = useState({ inputsValues, setImputsValues })
 
-    useEffect(()=>{
+    useEffect(() => {
         valuesRef.inputsValues = inputsValues
-    },[inputsValues])
+    }, [inputsValues])
 
     // mananging the inputs and their event onChange
     let inputId = 0
@@ -67,9 +67,10 @@ function Form({ children, inputs, onSubmit = () => { } }) {
         children.forEach(children, (child) => {
             childrenWithRef.push(child(inputsValues, setImputsValues))
         })
-    }
-    else {
-        childrenWithRef = children(inputsValues, setImputsValues)
+    } else {
+        if (children) {
+            childrenWithRef = children(inputsValues, setImputsValues)
+        }
     }
 
 

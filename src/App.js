@@ -13,6 +13,7 @@ import { firebaseTest, saveFirebaseUserDataInContext } from './utils/firebaseUse
 import { auth } from './firebase/config';
 import { checkGeneralUserSession } from './utils/general';
 import CreateProductForm from './components/formsMainComponents/createProductForm';
+import { test } from './utils/products';
 
 
 
@@ -24,7 +25,7 @@ function App() {
   useEffect(() => {
     checkGeneralUserSession(context)
   }, []);
-
+  
   //
 
   return (

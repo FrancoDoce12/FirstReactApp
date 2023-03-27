@@ -25,7 +25,6 @@ async function getProductsByCategories(categories) {
 }
 
 const addProduct = async (product) => {
-    console.log(product,"created")
     await addDoc(getProductsCollectionRef(), product)
 }
 
