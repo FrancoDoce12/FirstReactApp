@@ -1,5 +1,6 @@
 import { getDoc, updateDoc } from 'firebase/firestore';
 import { getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
+import { convertDataBaseArray } from '../firebase/utils/main';
 import { getUserById, getUserRef, userExists } from '../firebase/utils/users';
 import { userTypeDocument } from './users';
 
@@ -104,6 +105,9 @@ const getCurrentUserType = async (context) => {
 
 
 async function saveUserDataInContext(userData, context) {
+    if (userData.cart){
+        userData.cart = convertDataBaseArray(userData.cart)
+    }
     const user = {...userData}
     delete user.password
     await context.setUser(user)

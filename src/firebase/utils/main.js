@@ -19,9 +19,32 @@ const getCollectionRef = (colllectionRoute) => {
     return collection(db, colllectionRoute)
 }
 
+const getDocIdByRef = async (docRef) => {
+    return (await getDoc(docRef)).id
+}
+
+const getDocDataByRef = async (docRef) => {
+    return await (await getDoc(docRef)).data()
+}
+
+const getDocDataByRefWithId = async (docRef) => {
+    const docSnapshot = await getDoc(docRef)
+    const docData = await docSnapshot.data()
+    return { ...docData, id: docSnapshot.id }
+}
+
+// transform the firestore array data into a readeble javascript array
+const convertDataBaseArray = (dbArray) => {
+    if (dbArray) {
+        return Object.keys(dbArray).map(key => dbArray[key])
+    } else {
+        return []
+    }
+}
+
 const test = (argument) => {
 
 }
 
 
-export { getCollectionRef, getDocRefById, getDocById, saveDocCustomId }
+export { getCollectionRef, getDocRefById, getDocById, saveDocCustomId, getDocDataByRef, getDocDataByRefWithId, getDocIdByRef, convertDataBaseArray }

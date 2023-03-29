@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { test } from '../utils/products'
 
 let AppContext = createContext({})
@@ -6,7 +6,6 @@ let AppContext = createContext({})
 
 function AppContextProvider({ children }) {
 
-    const [cart, setCart] = useState([])
 
     const [isUserSessionCheck, setIsUserSessionCheck] = useState(false)
 
@@ -16,11 +15,18 @@ function AppContextProvider({ children }) {
 
     const [userType, setUserType] = useState({ validation: false, type: undefined })
 
+    const [cartCount, setCartCount] = useState(0)
 
+    useEffect(()=>{
+        if (user.cart?.length){
+            setCartCount(user.cart.length)
+        }
+    },[user])
+    
 
     let value = {
-        cart,
-        setCart,
+        cartCount,
+        setCartCount,
         user,
         setUser,
         isUserSessionCheck,
@@ -31,7 +37,6 @@ function AppContextProvider({ children }) {
         setUserType
     }
 
-    // test(value)
 
     return (<AppContext.Provider value={value} >
         {children}

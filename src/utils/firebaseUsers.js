@@ -49,7 +49,7 @@ const firebaseTest = async () => {
 }
 
 const saveFirebaseUserDataInContext = async (firebaseUser, context) => {
-    const userData = await getFirebaseDocUserByUid(firebaseUser.uid)
+    const userData = (await getFirebaseDocUserByUid(firebaseUser.uid)).data()
     // don t want the password saved into the context
     delete userData.password
     const user = {

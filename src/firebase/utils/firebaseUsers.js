@@ -1,7 +1,7 @@
 import { db, auth } from "../config";
 import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 
 const firestoreUsersRoute = "users"

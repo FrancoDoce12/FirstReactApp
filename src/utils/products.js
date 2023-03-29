@@ -1,7 +1,7 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
-import { getDocRefById } from "../firebase/utils/main";
+import { convertDataBaseArray, getDocDataByRef, getDocDataByRefWithId, getDocIdByRef, getDocRefById } from "../firebase/utils/main";
 import { addProduct } from "../firebase/utils/products";
 import { getUserRef } from "../firebase/utils/users";
 import { getGeneralCurrentUserRef } from "./general";
@@ -54,4 +54,52 @@ const createProduct = async (product, context) => {
     return true
 }
 
-export { createProduct, test }
+const buyProduct = async (productRef, userRef, context) => {
+
+    const productData = await getDocDataByRefWithId(productRef)
+    const userData = await getDocDataByRefWithId(userRef)
+    if ((!productData) && (!userData)) {
+        return false
+    }
+
+
+    // You can t not buy your own product (userId == itemOwnerId)
+    const userId = userData.id
+    delete userData.id
+    const productDataId = productData.id
+    delete productData.id
+    let itemOwnerId = 0
+    if (productData.userRef) {
+        itemOwnerId = await getDocIdByRef(productData.userRef)
+    } 
+
+    // You can t not buy your own product (userId == itemOwnerId)
+    if (userId == itemOwnerId) {
+        return false
+    }
+
+    // you can t not buy somthing that you alredy buy
+    const currentCartIds = []
+    const userCurrentCart = convertDataBaseArray(userData.cart)
+    for (let ref = 0; ref < userCurrentCart.length; ref++) {
+        const itemRef = userCurrentCart[ref]
+        currentCartIds.push(await getDocIdByRef(itemRef))
+    }
+    // you can t not buy somthing that you alredy buy
+    if (currentCartIds.includes(productDataId)) {
+        return false
+    }
+
+
+    const newCart = [...userCurrentCart, productRef]
+    await updateDoc(userRef, { cart: newCart })
+    // context.setCartCount(context.CartCount + 1)
+
+    const newUserData = userData
+    newUserData.cart = newCart
+    context.setUser(newUserData)
+
+    return true
+}
+
+export { createProduct, buyProduct }

@@ -1,5 +1,6 @@
 import { auth } from "../firebase/config";
 import { getCurrentFirebaseUser, getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
+import { getDocDataByRef } from "../firebase/utils/main";
 import { getUserById, getUserRef, userExists } from "../firebase/utils/users";
 import { checkFirebaseUser, firebaseUserLogin, firebaseUserSingOut, saveFirebaseUserDataInContext, userTypeFirestore } from "./firebaseUsers";
 import { getCurrentUserType, saveUserTypeDataInContext } from "./main"
@@ -55,6 +56,10 @@ const checkGeneralUserSession = async (context) => {
     return data
 }
 
+const getGeneralCurrentUserData = async (context) => {
+    return await getDocDataByRef(getGeneralCurrentUserRef(context))
+}
+
 const getGeneralCurrentUserRef = (context) => {
     if (!context.userType.type) {
         return false
@@ -66,4 +71,4 @@ const getGeneralCurrentUserRef = (context) => {
     }
 }
 
-export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef }
+export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef, getGeneralCurrentUserData }

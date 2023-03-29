@@ -14,6 +14,7 @@ import { auth } from './firebase/config';
 import { checkGeneralUserSession } from './utils/general';
 import CreateProductForm from './components/formsMainComponents/createProductForm';
 import { test } from './utils/products';
+import CartView from './components/cartView/cartView';
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route>
           <Route path='/RegisterOptions' element={<RegisterOptions />} ></Route>
           <Route path='/CreateNewProduct' element={<CreateProductForm />} ></Route>
+          <Route path='/cartView' element={<CartView/>}></Route>
         </Routes>
       </div>
     </BrowserRouter>
