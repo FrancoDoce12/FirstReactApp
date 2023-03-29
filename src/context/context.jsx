@@ -20,7 +20,10 @@ function AppContextProvider({ children }) {
     useEffect(()=>{
         if (user.cart?.length){
             setCartCount(user.cart.length)
+        } else {
+            setCartCount(0)
         }
+        console.log("caca")
     },[user])
     
 

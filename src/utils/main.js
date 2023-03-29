@@ -2,6 +2,7 @@ import { getDoc, updateDoc } from 'firebase/firestore';
 import { getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
 import { convertDataBaseArray } from '../firebase/utils/main';
 import { getUserById, getUserRef, userExists } from '../firebase/utils/users';
+import { generalUserExists } from './general';
 import { userTypeDocument } from './users';
 
 const sessionNumberKey = "sessionNumber"
@@ -75,7 +76,7 @@ async function userValidation(formUser) {
         return false
     }
 
-    if (await userExists(formUser.email)) {
+    if (await generalUserExists(formUser.email)) {
         console.error(`Email ${formUser.email} alredy on use`)
         return false
     }

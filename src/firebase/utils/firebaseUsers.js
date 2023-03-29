@@ -1,7 +1,7 @@
 import { db, auth } from "../config";
 import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, limit, query, where } from "firebase/firestore";
 
 
 const firestoreUsersRoute = "users"
@@ -54,5 +54,12 @@ const getFirebaseUserRefById = (Uid) => {
     return getDocRefById(firestoreUsersRoute, Uid)
 }
 
+const firestireUserExists = async (email) => {
+    const collectionRef = getFirestoreUsersCollectionRef()
+    const queryRequest = query(collectionRef, where('email', '==', email), limit(1))
+    const documentsSnapshot = await getDocs(queryRequest)
+    return (!documentsSnapshot.empty)
+}
 
-export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser, getFirestoreUsersCollectionRef, getFirebaseDocUserByUid, getFirebaseUserRefById }
+
+export { getCurrentFirebaseUser, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser, getFirestoreUsersCollectionRef, getFirebaseDocUserByUid, getFirebaseUserRefById,firestireUserExists }

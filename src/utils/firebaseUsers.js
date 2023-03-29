@@ -44,9 +44,6 @@ const firebaseUserSingOut = async (context) => {
     await deleteAllUserDataInContext(context)
 }
 
-const firebaseTest = async () => {
-    const example = getCurrentFirebaseUser()
-}
 
 const saveFirebaseUserDataInContext = async (firebaseUser, context) => {
     const userData = (await getFirebaseDocUserByUid(firebaseUser.uid)).data()
@@ -83,5 +80,5 @@ const checkFirebaseUser = async (context) => {
     return userTypeObj
 }
 
-export { firebaseUserRegister, firebaseTest, firebaseUserLogin, firebaseUserSingOut, userTypeFirestore, saveFirebaseUserDataInContext, checkFirebaseUser }
+export { firebaseUserRegister, firebaseUserLogin, firebaseUserSingOut, userTypeFirestore, saveFirebaseUserDataInContext, checkFirebaseUser }
 

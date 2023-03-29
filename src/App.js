@@ -15,6 +15,7 @@ import { checkGeneralUserSession } from './utils/general';
 import CreateProductForm from './components/formsMainComponents/createProductForm';
 import { test } from './utils/products';
 import CartView from './components/cartView/cartView';
+import { firestireUserExists } from './firebase/utils/firebaseUsers';
 
 
 
@@ -22,6 +23,7 @@ import CartView from './components/cartView/cartView';
 function App() {
 
   let context = useContext(AppContext)
+  firestireUserExists("francosanche@gmail.com")
 
   useEffect(() => {
     checkGeneralUserSession(context)

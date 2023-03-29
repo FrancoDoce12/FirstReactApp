@@ -1,11 +1,12 @@
 import { closeGeneralUserSession } from "../../utils/general"
-import Button1 from "./Button1"
+import Link1 from "./Link1"
 
 
 const LogOutButton = ({context}) => {
-    return (<Button1 onClick={() => {
+
+    return (<Link1 onClick={() => {
         closeGeneralUserSession(context)
-    }} >Log out</Button1>)
+    }} to={"/"} >Log out</Link1>)
 }
 
 export default LogOutButton
