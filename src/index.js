@@ -7,10 +7,6 @@ import { initFirestoreApp } from './firebase/config'
 import { AppContextProvider } from './context/context';
 
 
-// Sentry.init({
-//   dsn: "https://<key>@sentry.io/<project>"
-// });
-
 initFirestoreApp()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

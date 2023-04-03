@@ -1,9 +1,6 @@
-import { getDoc } from "firebase/firestore"
 import { useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
 import { AppContext } from "../../context/context"
-import { getDocDataByRef, getDocDataByRefWithId } from "../../firebase/utils/main"
-import { getGeneralCurrentUserData, getGeneralCurrentUserRef } from "../../utils/general"
+import { getDocDataByRefWithId } from "../../firebase/utils/main"
 import Link1 from "../buttons/Link1"
 import ItemComponent from "../itemComponent/itemComponent"
 

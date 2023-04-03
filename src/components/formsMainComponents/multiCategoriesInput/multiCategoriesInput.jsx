@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react"
-import { isIterable } from "../../../utils/main"
 import Button1 from "../../buttons/Button1"
-import FormInput from "../fromImInput/formInput"
-import CancelButton from "../../buttons/cancelButton/cancelButton"
 import CategorieOption from "./categorieOption"
 
 

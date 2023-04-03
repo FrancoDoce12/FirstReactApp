@@ -1,5 +1,5 @@
 import { addDoc, getDoc, getDocs, query, where } from "firebase/firestore"
-import { getCollectionRef, getDocById, getDocRefById, saveDocCustomId } from "./main"
+import { getCollectionRef, getDocById, getDocRefById } from "./main"
 
 const prodcutsRoute = "Productos"
 

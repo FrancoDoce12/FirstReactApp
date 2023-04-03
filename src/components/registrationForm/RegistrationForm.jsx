@@ -2,10 +2,9 @@ import './RegistrationForm.css'
 import FormNotificationContainer from '../formNotificationContainer/formNotificationContainer'
 import RegisterInput from '../registerImput/RegisterInput'
 import SubmitButton from '../submitButton/submitButton'
-import { useState, useContext, useEffect } from 'react'
-import { registerUser, checkPasswords, test, getUserByEmail } from '../../utils/functions'
+import { useState, useContext } from 'react'
+import { registerUser } from '../../utils/functions'
 import { AppContext } from '../../context/context'
-import { doc, getFirestore } from 'firebase/firestore'
 
 
 function RegistrationForm() {

@@ -1,7 +1,7 @@
 import { auth } from "../firebase/config"
-import { getCurrentFirebaseUser, getFirebaseDocUserByUid, getFirestoreUsersCollectionRef, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
+import { getFirebaseDocUserByUid, getFirestoreUsersCollectionRef, saveAndRegisterFirebaseUser, sendEmailVerificationFirabeseUser, signInFirebaseUser, singOutFirebaseUser } from "../firebase/utils/firebaseUsers"
 import { saveDocCustomId } from "../firebase/utils/main"
-import { deleteAllUserDataInContext, deleteUserDataInContext, saveUserDataInContext, saveUserTypeDataInContext, userValidation } from "./main"
+import { deleteAllUserDataInContext, saveUserDataInContext, saveUserTypeDataInContext, userValidation } from "./main"
 
 const userTypeFirestore = "firestoreUser"
 

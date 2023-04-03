@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react'
-import { test } from '../utils/products'
 
 let AppContext = createContext({})
 

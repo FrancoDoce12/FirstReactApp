@@ -1,6 +1,6 @@
 import './itemDetailContainer.css'
 import { useParams } from 'react-router-dom'
-import { getProductById, getProductByRef, getProductRef } from '../../firebase/utils/products'
+import { getProductByRef, getProductRef } from '../../firebase/utils/products'
 import { useContext, useEffect, useState } from 'react'
 import { getDoc } from 'firebase/firestore'
 import UserMiniDetailContainter from '../userMiniDetailContainter/userMiniDetailContainter'

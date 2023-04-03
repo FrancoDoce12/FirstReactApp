@@ -1,12 +1,8 @@
 import './UserWidget.css'
 import Link1 from '../buttons/Link1'
-import Button1 from '../buttons/Button1'
-import { useContext, useState, useEffect } from 'react'
+import { useContext } from 'react'
 import { AppContext } from '../../context/context'
-import { useLocation } from 'react-router-dom';
-import { closeGeneralUserSession } from '../../utils/general'
 import { userTypeFirestore } from '../../utils/firebaseUsers'
-import { userTypeDocument } from '../../utils/users'
 import LogOutButton from '../buttons/logOutButton'
 
 

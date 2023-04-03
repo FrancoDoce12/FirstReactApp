@@ -1,11 +1,7 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
-import { convertDataBaseArray, getDocDataByRef, getDocDataByRefWithId, getDocIdByRef, getDocRefById } from "../firebase/utils/main";
+import { getDoc, updateDoc } from "firebase/firestore";
+import { convertDataBaseArray, getDocDataByRefWithId, getDocIdByRef } from "../firebase/utils/main";
 import { addProduct } from "../firebase/utils/products";
-import { getUserRef } from "../firebase/utils/users";
 import { getGeneralCurrentUserRef } from "./general";
-import { userTypeDocument } from "./users";
 
 const validateProduct = (product) => {
     if (!(product.title && product.img_source && product.description && product.alt)) {
@@ -71,7 +67,7 @@ const buyProduct = async (productRef, userRef, context) => {
     let itemOwnerId = 0
     if (productData.userRef) {
         itemOwnerId = await getDocIdByRef(productData.userRef)
-    } 
+    }
 
     // You can t not buy your own product (userId == itemOwnerId)
     if (userId == itemOwnerId) {

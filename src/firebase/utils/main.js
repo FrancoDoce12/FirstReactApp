@@ -1,5 +1,5 @@
-import { db, auth } from "../config";
-import { query, collection, where, doc, getDoc, getDocs, addDoc, updateDoc, fild, setDoc } from "firebase/firestore";
+import { db } from "../config";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 
 const getDocRefById = (collectionRute, docId) => {

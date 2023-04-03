@@ -1,9 +1,7 @@
-import { getDoc, updateDoc } from 'firebase/firestore';
 import { getCurrentFirebaseUser } from '../firebase/utils/firebaseUsers';
 import { convertDataBaseArray } from '../firebase/utils/main';
-import { getUserById, getUserRef, userExists } from '../firebase/utils/users';
+import { userExists } from '../firebase/utils/users';
 import { generalUserExists } from './general';
-import { userTypeDocument } from './users';
 
 const sessionNumberKey = "sessionNumber"
 const userIdKey = "userId"

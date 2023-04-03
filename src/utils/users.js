@@ -1,5 +1,5 @@
 import { getDoc, updateDoc } from "firebase/firestore";
-import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, deleteUserDataInContext, validateDbPassword, userValidation, saveUserTypeDataInContext, deleteUserTypeDataInContext, deleteAllUserDataInContext } from "./main";
+import { getNewSessionNumber, setIntoLocalStorage, getFromLocalStorage, sessionNumberKey, userIdKey, saveUserDataInContext, validateDbPassword, userValidation, saveUserTypeDataInContext, deleteAllUserDataInContext } from "./main";
 import { getUserRef, saveUser } from "../firebase/utils/users";
 
 const userTypeDocument = "documentUser"
