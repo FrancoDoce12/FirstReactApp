@@ -21,7 +21,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "homepage": "http://FrancoDoce12.github.io/FirstReactApp"
+    "homepage": "https://FrancoDoce12.github.io/FirstReactApp"
   },
   "eslintConfig": {
     "extends": [
