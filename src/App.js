@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/itemListContainer/ItemListContainer';
@@ -26,7 +26,7 @@ function App() {
   //
 
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL} >
+    <Router >
 
       <div className="App">
         <Navbar />
@@ -43,7 +43,7 @@ function App() {
           <Route path='/cartView' element={<CartView/>}></Route>
         </Routes>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 

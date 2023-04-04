@@ -22,7 +22,6 @@ function AppContextProvider({ children }) {
         } else {
             setCartCount(0)
         }
-        console.log("caca")
     },[user])
     
 
