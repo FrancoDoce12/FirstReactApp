@@ -7,6 +7,7 @@ import './CarWidget.css'
 function CarWidget() {
 
     const context = useContext(AppContext)
+    let src = process.env.PUBLIC_URL + "../../assets/imgs/shoppingcar.png"
 
     let cartCount 
     if (context.cartCount){
@@ -18,7 +19,7 @@ function CarWidget() {
     return (
         <div className='car-widget'>
             <Link1 to={"/cartView"} >
-                <img className='shopping-car' src="../../assets/imgs/shoppingcar.png" alt="a shopping car png" />
+                <img className='shopping-car' src={src} alt="a shopping car png" />
                 <p>{cartCount}</p>
             </Link1>
         </div>

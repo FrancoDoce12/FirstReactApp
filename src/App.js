@@ -12,15 +12,12 @@ import RegisterFirestoreUserForm from './components/formsMainComponents/register
 import { checkGeneralUserSession } from './utils/general';
 import CreateProductForm from './components/formsMainComponents/createProductForm';
 import CartView from './components/cartView/cartView';
-import { firestireUserExists } from './firebase/utils/firebaseUsers';
-
 
 
 
 function App() {
 
   let context = useContext(AppContext)
-  firestireUserExists("francosanche@gmail.com")
 
   useEffect(() => {
     checkGeneralUserSession(context)
@@ -29,14 +26,13 @@ function App() {
   //
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL} >
 
-      {/* <AppContextProvider> */}
       <div className="App">
         <Navbar />
 
-        <Routes>
-          <Route path='/' element={<ItemListContainer greetings={"Hola Mundoo"} />} ></Route>
+        <Routes >
+          <Route path='/' element={<ItemListContainer/>} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
           <Route path='/LogIn' element={<LogInForm />} ></Route>

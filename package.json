@@ -2,6 +2,7 @@
   "name": "curso_react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://francodoce12.github.io/FirstReactApp",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -20,8 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "homepage": "https://FrancoDoce12.github.io/FirstReactApp"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
