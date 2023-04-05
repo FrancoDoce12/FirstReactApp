@@ -22,7 +22,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "buildAndDeploy": "npm run build ; npm run deploy"
+    "buildDeploy": "npm run build ; gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
