@@ -7,30 +7,63 @@ import { useEffect, useState } from 'react'
 
 function ItemListContainer() {
 
-    const [data, setData] = useState([])
     const params = useParams()
+    const [request, setRequest] = useState({ amount: 3, categories: params?.categories })
+    const [refData] = useState({ data: [], request, newRequestCompleted: true, lastElement: undefined, allDataGiven: false })
 
     useEffect(() => {
         async function getData() {
-            let dataFromDB
-            if (params.category) {
-                dataFromDB = getProductsByCategories(params.category)
+            if (request.amount != refData.data.length || request.categories != params.categories) {
+                let dataFromDB = await getProducts(3, params?.category, refData.lastElement)
+
+                if (dataFromDB.length != 0) {
+
+                    refData.data = [...refData.data, ...dataFromDB]
+                    refData.request.categories = params.categories
+                    refData.request.amount = request.amount
+                    refData.lastElement = refData.data[refData.data.length - 1]
+
+                    refData.newRequestCompleted = true
+
+                    // force update
+                    setRequest(refData.request)
+                } else {
+                    refData.allDataGiven = true
+                }
             }
-            else {
-                dataFromDB = getProducts()
-            }
-            setData(await dataFromDB)
         }
-
         getData()
+    }, [params, request])
 
-    }, [params])
 
-    if (data.length > 0) {
+    const handleScroll = () => {
+        if (!refData.allDataGiven) {
+            const scrollTop = window.scrollY // actual scroll
+            const windowHeight = window.innerHeight
+            const scrollHeight = document.documentElement.scrollHeight
+
+            if ((scrollTop + windowHeight + windowHeight / 2) > scrollHeight) {
+                if (refData.newRequestCompleted) {
+                    refData.newRequestCompleted = false
+                    let newRequest = { ...refData.request }
+                    newRequest.amount = refData.request.amount + 5
+                    setRequest(newRequest)
+                }
+            }
+        }
+    }
+
+
+
+    window.addEventListener('scroll', handleScroll)
+
+
+
+    if (refData.data.length > 0) {
         return (
             <div className='container-1'>
 
-                {data.map(item => {
+                {refData.data.map(item => {
                     return (
                         <ItemComponent key={item.id} id={item.id} img_source={item.img_source} alt={item.alt} title={item.title} ></ItemComponent>
                     )

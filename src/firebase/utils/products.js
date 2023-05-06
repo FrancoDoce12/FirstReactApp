@@ -1,4 +1,4 @@
-import { addDoc, getDoc, getDocs, query, where } from "firebase/firestore"
+import { addDoc, getDoc, getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore"
 import { getCollectionRef, getDocById, getDocRefById } from "./main"
 
 const prodcutsRoute = "Productos"
@@ -12,16 +12,22 @@ const getProductById = async (id) => {
     return await getDocById(prodcutsRoute, id)
 }
 
-async function getProducts() {
-    return (await getDocs(getProductsCollectionRef())).docs.map(item => {
-        return { ...item.data(), id: item.id }
-    })
-}
+async function getProducts(limits, categories, lastElement) {
+    let queryConstraint = [orderBy("title"), limit(limits)]
+    if (lastElement) {
+        queryConstraint.push(startAfter(lastElement?.title))
+    }
+    if (categories) {
+        queryConstraint.push(where('categories', 'array-contains-any', [categories]))
+    }
 
-async function getProductsByCategories(categories) {
-    return (await getDocs(query(getProductsCollectionRef(), where('categories', 'array-contains-any', [categories])))).docs.map(item => {
-        return { ...item.data(), id: item.id }
-    })
+    let q = query(getProductsCollectionRef(), ...queryConstraint)
+
+    let data = (await getDocs(q)).docs.map(item => {
+            return { ...item.data(), id: item.id }
+        })
+    
+    return data
 }
 
 const addProduct = async (product) => {

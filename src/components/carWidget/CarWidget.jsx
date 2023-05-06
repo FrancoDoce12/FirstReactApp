@@ -6,7 +6,6 @@ import shoppingCartImg from '../../../public/assets/imgs/shoppingcar.png';
 
 
 function CarWidget() {
-    console.log(shoppingCartImg)
 
     const context = useContext(AppContext)
 

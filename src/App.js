@@ -1,10 +1,10 @@
-import { HashRouter as Router, Route, Routes} from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 import ItemListContainer from './components/itemListContainer/ItemListContainer';
 import ItemDetailContainer from './components/itemDetailContainer/itemDetailContainer';
 import { AppContext } from './context/context';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import RegisterUserForm from './components/formsMainComponents/registerUserForm';
 import LogInForm from './components/formsMainComponents/logInForm';
 import RegisterOptions from './components/registerOptions/registerOptions';
@@ -22,8 +22,7 @@ function App() {
   useEffect(() => {
     checkGeneralUserSession(context)
   }, []);
-  
-  //
+
 
   return (
     <Router >
@@ -32,7 +31,7 @@ function App() {
         <Navbar />
 
         <Routes >
-          <Route path='/' element={<ItemListContainer/>} ></Route>
+          <Route path='/' element={<ItemListContainer />} ></Route>
           <Route path='/category/:category' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
           <Route path='/LogIn' element={<LogInForm />} ></Route>
@@ -40,7 +39,7 @@ function App() {
           <Route path='/RegisterOption2' element={<RegisterFirestoreUserForm />} ></Route>
           <Route path='/RegisterOptions' element={<RegisterOptions />} ></Route>
           <Route path='/CreateNewProduct' element={<CreateProductForm />} ></Route>
-          <Route path='/cartView' element={<CartView/>}></Route>
+          <Route path='/cartView' element={<CartView />}></Route>
         </Routes>
       </div>
     </Router>
