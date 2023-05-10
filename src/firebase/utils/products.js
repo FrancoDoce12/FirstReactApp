@@ -43,4 +43,4 @@ const getProductByRef = async (productRef) => {
 }
 
 
-export { getProductsByCategories, getProducts, getProductById, addProduct, getProductRef, getProductByRef }
+export { getProducts, getProductById, addProduct, getProductRef, getProductByRef }

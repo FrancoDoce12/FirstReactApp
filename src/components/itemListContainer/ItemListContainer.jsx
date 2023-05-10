@@ -1,54 +1,67 @@
 import './ItemListContainer.css'
 import ItemComponent from '../itemComponent/itemComponent'
 import { useParams } from 'react-router-dom'
-import { getProducts, getProductsByCategories } from '../../firebase/utils/products'
+import { getProducts } from '../../firebase/utils/products'
 import { useEffect, useState } from 'react'
 
 
 function ItemListContainer() {
 
+    const loadAmaunt = 3
     const params = useParams()
-    const [request, setRequest] = useState({ amount: 3, categories: params?.categories })
-    const [refData] = useState({ data: [], request, newRequestCompleted: true, lastElement: undefined, allDataGiven: false })
+    const {categories} = useParams()
+    const [data, setData] = useState([])
+    const [refData] = useState({
+        newRequestCompleted: true, lastElement: undefined, noMoreData: false,
+        previusData: []
+    })
 
-    useEffect(() => {
-        async function getData() {
-            if (request.amount != refData.data.length || request.categories != params.categories) {
-                let dataFromDB = await getProducts(3, params?.category, refData.lastElement)
+    refData.newRequestCompleted = true
 
-                if (dataFromDB.length != 0) {
 
-                    refData.data = [...refData.data, ...dataFromDB]
-                    refData.request.categories = params.categories
-                    refData.request.amount = request.amount
-                    refData.lastElement = refData.data[refData.data.length - 1]
+    async function getData(deleteOldData) {
+        if (refData.newRequestCompleted) {
+            refData.newRequestCompleted = false
+            let productsData = await getProducts(loadAmaunt, params.categories, refData.lastElement)
+            if (deleteOldData) {
+                setData(productsData)
+                refData.previusData = productsData
+            } else {
+                let newData = [...refData.previusData, ...productsData]
+                setData(newData)
+                refData.previusData = newData
 
-                    refData.newRequestCompleted = true
-
-                    // force update
-                    setRequest(refData.request)
-                } else {
-                    refData.allDataGiven = true
-                }
+            }
+            if (productsData.length == 0) {
+                refData.noMoreData = true
+            } else {
+                refData.lastElement = productsData[productsData.length - 1]
             }
         }
-        getData()
-    }, [params, request])
+    }
+
+
+    useEffect(() => {
+        getData(true)
+    },[])
+
+
+
+    useEffect(() => {
+        refData.lastElement = undefined
+        refData.previusData = []
+        getData(true)
+    }, [categories])
 
 
     const handleScroll = () => {
-        if (!refData.allDataGiven) {
+        if (!refData.noMoreData && refData.newRequestCompleted) {
             const scrollTop = window.scrollY // actual scroll
             const windowHeight = window.innerHeight
             const scrollHeight = document.documentElement.scrollHeight
 
             if ((scrollTop + windowHeight + windowHeight / 2) > scrollHeight) {
-                if (refData.newRequestCompleted) {
-                    refData.newRequestCompleted = false
-                    let newRequest = { ...refData.request }
-                    newRequest.amount = refData.request.amount + 5
-                    setRequest(newRequest)
-                }
+                getData(false)
             }
         }
     }
@@ -59,11 +72,11 @@ function ItemListContainer() {
 
 
 
-    if (refData.data.length > 0) {
+    if (data.length > 0) {
         return (
             <div className='container-1'>
 
-                {refData.data.map(item => {
+                {data.map(item => {
                     return (
                         <ItemComponent key={item.id} id={item.id} img_source={item.img_source} alt={item.alt} title={item.title} ></ItemComponent>
                     )
