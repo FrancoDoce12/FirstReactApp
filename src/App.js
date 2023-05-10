@@ -32,7 +32,7 @@ function App() {
 
         <Routes >
           <Route path='/' element={<ItemListContainer />} ></Route>
-          <Route path='/category/:category' element={<ItemListContainer />} ></Route>
+          <Route path='/category/:categories' element={<ItemListContainer />} ></Route>
           <Route path='/item/:id' element={<ItemDetailContainer />} ></Route>
           <Route path='/LogIn' element={<LogInForm />} ></Route>
           <Route path='/RegisterOption1' element={<RegisterUserForm />} ></Route>

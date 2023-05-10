@@ -9,7 +9,6 @@ function ItemListContainer() {
 
     const loadAmaunt = 3
     const params = useParams()
-    const {categories} = useParams()
     const [data, setData] = useState([])
     const [refData] = useState({
         newRequestCompleted: true, lastElement: undefined, noMoreData: false,
@@ -48,10 +47,12 @@ function ItemListContainer() {
 
 
     useEffect(() => {
+        console.log(params)
         refData.lastElement = undefined
+        refData.noMoreData = false
         refData.previusData = []
         getData(true)
-    }, [categories])
+    }, [params])
 
 
     const handleScroll = () => {
