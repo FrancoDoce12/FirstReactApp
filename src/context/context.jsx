@@ -16,14 +16,14 @@ function AppContextProvider({ children }) {
 
     const [cartCount, setCartCount] = useState(0)
 
-    useEffect(()=>{
-        if (user.cart?.length){
+    useEffect(() => {
+        if (user.cart?.length) {
             setCartCount(user.cart.length)
         } else {
             setCartCount(0)
         }
-    },[user])
-    
+    }, [user])
+
 
     let value = {
         cartCount,

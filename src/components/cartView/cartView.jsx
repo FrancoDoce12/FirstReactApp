@@ -3,6 +3,7 @@ import { AppContext } from "../../context/context"
 import { getDocDataByRefWithId } from "../../firebase/utils/main"
 import Link1 from "../buttons/Link1"
 import ItemComponent from "../itemComponent/itemComponent"
+import { deleteCartItem } from "../../utils/general"
 
 const CartView = () => {
 
@@ -38,7 +39,12 @@ const CartView = () => {
             <>
                 {items.map(item => {
                     return (
-                        <ItemComponent key={item.id} id={item.id} img_source={item.img_source} alt={item.alt} title={item.title} ></ItemComponent>
+                        <ItemComponent
+                        key={item.id} id={item.id} img_source={item.img_source}
+                        alt={item.alt} title={item.title} cancelButton = {true} 
+                        cancelCallBack={()=>{
+                            deleteCartItem(item.id, context)
+                        }} ></ItemComponent>
                     )
                 })}
             </>

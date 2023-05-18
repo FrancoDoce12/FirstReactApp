@@ -1,11 +1,24 @@
 import './itemComponent.css'
 import { Link } from 'react-router-dom'
+import CancelButton from '../buttons/cancelButton/cancelButton'
 
 
 
 
-function ItemComponent({ id, img_source, alt = '', title = 'UNDEFINED',  }) {
+function ItemComponent({ id, img_source, alt = '', title = 'UNDEFINED', cancelButton = false, cancelCallBack = ()=>{} }) {
 
+    if (cancelButton){
+        cancelButton = (
+            <div>
+                <CancelButton onClick={cancelCallBack}>
+                    x
+                </CancelButton>
+            </div>
+        )
+    } else {
+        cancelButton = <></>
+    }
+    
 
     return (
         <div className='item_container'>
@@ -16,6 +29,7 @@ function ItemComponent({ id, img_source, alt = '', title = 'UNDEFINED',  }) {
                     <button>Read More!</button>
                 </Link>
             </div>
+            {cancelButton}
         </div>
     )
 

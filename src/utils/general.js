@@ -1,9 +1,11 @@
+import { updateDoc } from "firebase/firestore";
 import { firestireUserExists, getFirebaseUserRefById } from "../firebase/utils/firebaseUsers";
 import { getDocDataByRef } from "../firebase/utils/main";
 import { getUserRef, userExists } from "../firebase/utils/users";
 import { checkFirebaseUser, firebaseUserLogin, firebaseUserSingOut, userTypeFirestore } from "./firebaseUsers";
 import { getCurrentUserType, saveUserTypeDataInContext } from "./main"
 import { closeUserSession, logInUser, verifyUserSession, userTypeDocument } from "./users";
+import { convertDataBaseArray } from "../firebase/utils/main";
 
 
 
@@ -64,6 +66,16 @@ const getGeneralCurrentUserData = async (context) => {
     return await getDocDataByRef(getGeneralCurrentUserRef(context))
 }
 
+const getGeneralUserId = (context) => {
+    if (context.user) {
+        if (context.user.uid) {
+            return context.user.uid
+        } else {
+            context.user.email
+        }
+    } else return false
+}
+
 const getGeneralCurrentUserRef = (context) => {
     if (!context.userType.type) {
         return false
@@ -75,5 +87,24 @@ const getGeneralCurrentUserRef = (context) => {
     }
 }
 
+const deleteCartItem = async (idItem, context) => {
+    let userRef = getGeneralCurrentUserRef(context)
+    let userData = await getDocDataByRef(userRef)
+    let newCart = []
+    let oldCart = convertDataBaseArray(userData.cart)
+    oldCart.forEach((item) => {
+        if (item.id != idItem) {
+            newCart.push(item)
+        }
+    })
 
-export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef, getGeneralCurrentUserData, generalUserExists }
+    await updateDoc(userRef, { cart: newCart })
+
+    let newUserInfo = {...context.user}
+    newUserInfo.cart = newCart
+    context.setUser(newUserInfo)
+
+}
+
+
+export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef, getGeneralCurrentUserData, generalUserExists, deleteCartItem }
