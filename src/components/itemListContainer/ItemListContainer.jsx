@@ -47,7 +47,6 @@ function ItemListContainer() {
 
 
     useEffect(() => {
-        console.log(params)
         refData.lastElement = undefined
         refData.noMoreData = false
         refData.previusData = []

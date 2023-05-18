@@ -50,8 +50,9 @@ const createProduct = async (product, context) => {
     return true
 }
 
-const buyProduct = async (productRef, userRef, context) => {
+const buyProduct = async (productRef, context) => {
 
+    const userRef = getGeneralCurrentUserRef(context)
     const productData = await getDocDataByRefWithId(productRef)
     const userData = await getDocDataByRefWithId(userRef)
     if ((!productData) && (!userData)) {

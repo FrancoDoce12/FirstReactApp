@@ -1,13 +1,13 @@
 import './itemDetailContainer.css'
 import { useParams } from 'react-router-dom'
-import { getProductByRef, getProductRef } from '../../firebase/utils/products'
+import { deleteProduct, getProductByRef, getProductRef } from '../../firebase/utils/products'
 import { useContext, useEffect, useState } from 'react'
 import { getDoc } from 'firebase/firestore'
 import UserMiniDetailContainter from '../userMiniDetailContainter/userMiniDetailContainter'
 import Link1 from '../buttons/Link1'
 import { AppContext } from '../../context/context'
 import { buyProduct } from '../../utils/products'
-import { getGeneralCurrentUserRef } from '../../utils/general'
+import { getUserId } from '../../utils/general'
 
 function ItemDetailContainer() {
 
@@ -45,6 +45,18 @@ function ItemDetailContainer() {
         buyButton = <Link1 onClick={() => { }} >Buy Product!</Link1>
     }
 
+    let deleteButton = <></>
+    if (context.userType.type) {
+        if (getUserId(itemUserOwner) === getUserId(context.user)) {
+            deleteButton = (
+                <Link1 onClick={() => {
+                    deleteProduct(objRefItem.itemRef)
+                }} to={"/cartView"} >Delete Your Own Product</Link1>
+            )
+        }
+    }
+
+
 
     if (item) {
         return (
@@ -55,8 +67,9 @@ function ItemDetailContainer() {
                     <p>{item.desciption}</p>
                     <UserMiniDetailContainter title={"Created by:"} user={itemUserOwner}></UserMiniDetailContainter>
                     <Link1 onClick={() => {
-                        buyProduct(objRefItem.itemRef, getGeneralCurrentUserRef(context),context)
+                        buyProduct(objRefItem.itemRef, context)
                     }} to={"/cartView"} >Buy Product!</Link1>
+                    {deleteButton}
                 </div>
             </div>
         )

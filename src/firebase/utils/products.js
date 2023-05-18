@@ -1,4 +1,4 @@
-import { addDoc, getDoc, getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore"
+import { addDoc, deleteDoc, getDoc, getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore"
 import { getCollectionRef, getDocById, getDocRefById } from "./main"
 
 const prodcutsRoute = "Productos"
@@ -24,9 +24,9 @@ async function getProducts(limits, categories, lastElement) {
     let q = query(getProductsCollectionRef(), ...queryConstraint)
 
     let data = (await getDocs(q)).docs.map(item => {
-            return { ...item.data(), id: item.id }
-        })
-    
+        return { ...item.data(), id: item.id }
+    })
+
     return data
 }
 
@@ -42,5 +42,9 @@ const getProductByRef = async (productRef) => {
     return await getDoc(productRef)
 }
 
+const deleteProduct = async itemRef => {
+    await deleteDoc(itemRef)
+}
 
-export { getProducts, getProductById, addProduct, getProductRef, getProductByRef }
+
+export { getProducts, getProductById, addProduct, getProductRef, getProductByRef, deleteProduct }

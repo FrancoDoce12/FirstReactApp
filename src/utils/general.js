@@ -103,8 +103,18 @@ const deleteCartItem = async (idItem, context) => {
     let newUserInfo = {...context.user}
     newUserInfo.cart = newCart
     context.setUser(newUserInfo)
-
+}
+const getUserId = userObj => {
+    if (userObj.uid){
+        return userObj.uid
+    } else if (userObj.email) {
+        return userObj.email
+    } else {
+        return undefined
+    }
 }
 
 
-export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef, getGeneralCurrentUserData, generalUserExists, deleteCartItem }
+
+
+export { closeGeneralUserSession, generalLogIn, checkGeneralUserSession, getGeneralCurrentUserRef, getGeneralCurrentUserData, generalUserExists, deleteCartItem, getUserId }
